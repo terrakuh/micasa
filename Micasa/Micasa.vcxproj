@@ -76,11 +76,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\crona\Downloads\opencv-3.4.1\build\install\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\crona\Downloads\opencv-3.4.1\build\install\include;C:\Users\crona\Downloads\FreeImage\Wrapper\FreeImagePlus\dist\x32;C:\Users\crona\Downloads\FreeImage\Dist\x32;C:\Users\crona\Downloads\boost_1_67_0\;C:\Qt\Qt5.11.1\5.11.1\msvc2015\include;C:\Users\crona\Downloads\SQLiteCpp\install\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\crona\Downloads\opencv-3.4.1\build\install\x86\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_imgproc341d.lib;opencv_highgui341d.lib;opencv_core341d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\crona\Downloads\opencv-3.4.1\build\install\x86\vc15\lib;C:\Users\crona\Downloads\FreeImage\Wrapper\FreeImagePlus\dist\x32;C:\Users\crona\Downloads\FreeImage\Dist\x32;C:\Users\crona\Downloads\boost_1_67_0\stage\lib;C:\Qt\Qt5.11.1\5.11.1\msvc2015\lib;C:\Users\crona\Downloads\SQLiteCpp\install\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_imgproc341d.lib;opencv_highgui341d.lib;opencv_core341d.lib;FreeImaged.lib;FreeImagePlusd.lib;SQLiteCpp.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,11 +122,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="background.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="screen.cpp" />
+    <ClCompile Include="settings.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="background.hpp" />
+    <ClInclude Include="image_window.hpp" />
+    <ClInclude Include="image_window_ui.hpp" />
+    <ClInclude Include="main_window.hpp" />
+    <ClInclude Include="main_window_ui.hpp" />
+    <ClInclude Include="opengl_widget.hpp" />
     <ClInclude Include="screen.hpp" />
+    <ClInclude Include="settings.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
