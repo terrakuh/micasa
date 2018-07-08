@@ -21,27 +21,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="screen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="screen.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="image_window_ui.hpp">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
     <ClInclude Include="main_window_ui.hpp">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="image_window.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
     <ClInclude Include="main_window.hpp">
@@ -50,11 +35,8 @@
     <ClInclude Include="settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="opengl_widget.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="background.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="image_item.hpp">
+      <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

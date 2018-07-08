@@ -122,19 +122,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="background.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="screen.cpp" />
     <ClCompile Include="settings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="background.hpp" />
-    <ClInclude Include="image_window.hpp" />
-    <ClInclude Include="image_window_ui.hpp" />
+    <ClInclude Include="image_item.hpp" />
     <ClInclude Include="main_window.hpp" />
     <ClInclude Include="main_window_ui.hpp" />
-    <ClInclude Include="opengl_widget.hpp" />
-    <ClInclude Include="screen.hpp" />
     <ClInclude Include="settings.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
