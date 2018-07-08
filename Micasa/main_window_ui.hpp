@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'glhKphjX.ui'
+** Form generated from reading UI file 'glKOMHqQ.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.11.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef GLHKPHJX_H
-#define GLHKPHJX_H
+#ifndef GLKOMHQQ_H
+#define GLKOMHQQ_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -33,10 +33,16 @@ public:
 		centralwidget = new QWidget(MainWindow);
 		centralwidget->setObjectName(QStringLiteral("centralwidget"));
 		horizontalLayout = new QHBoxLayout(centralwidget);
+		horizontalLayout->setSpacing(0);
 		horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
 		horizontalLayout->setContentsMargins(0, 0, 0, 0);
 		graphicsView = new QGraphicsView(centralwidget);
 		graphicsView->setObjectName(QStringLiteral("graphicsView"));
+		graphicsView->setFrameShape(QFrame::NoFrame);
+		graphicsView->setFrameShadow(QFrame::Plain);
+		graphicsView->setLineWidth(0);
+		graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 		horizontalLayout->addWidget(graphicsView);
 
@@ -61,4 +67,4 @@ class MainWindow : public Ui_MainWindow {};
 
 QT_END_NAMESPACE
 
-#endif // GLHKPHJX_H
+#endif // GLKOMHQQ_H

@@ -1,8 +1,24 @@
 #include "settings.hpp"
 
-settings::settings() : _db("Micasa.db", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE), _get_sort_settings(_db, get_sort_setting_sql()), _set_folder_view(_db, set_folder_view_sql())
+
+std::unique_ptr<SQLite::Database> settings::_db;
+std::unique_ptr<SQLite::Statement> settings::_get_sort_settings;
+std::unique_ptr<SQLite::Statement> settings::_set_folder_view;
+
+void settings::initialize()
 {
-	_db.exec(create_table_sql());
+	_db.reset(new SQLite::Database("Micasa.db", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE));
+	_get_sort_settings.reset(new SQLite::Statement(*_db.get(), get_sort_setting_sql()));
+	_set_folder_view.reset(new SQLite::Statement(*_db.get(), set_folder_view_sql()));
+
+	_db->exec(create_table_sql());
+}
+
+void settings::finalize()
+{
+	_set_folder_view.reset();
+	_get_sort_settings.reset();
+	_db.reset();
 }
 
 void settings::set_default(folder_view _view)
@@ -12,24 +28,24 @@ void settings::set_default(folder_view _view)
 
 void settings::set_folder_view(const char * _path, folder_view _view)
 {
-	_set_folder_view.bindNoCopy(1, _path);
-	_set_folder_view.bind(2, _view.sort_type);
-	_set_folder_view.bind(3, _view.sort_order);
+	_set_folder_view->bindNoCopy(1, _path);
+	_set_folder_view->bind(2, _view.sort_type);
+	_set_folder_view->bind(3, _view.sort_order);
 
-	_set_folder_view.exec();
+	_set_folder_view->exec();
 }
 
 settings::folder_view settings::get_folder_view(const char * _path)
 {
 	folder_view _view{};
 
-	_get_sort_settings.bindNoCopy(1, _path);
-	_get_sort_settings.bindNoCopy(2, _path);
+	_get_sort_settings->bindNoCopy(1, _path);
+	_get_sort_settings->bindNoCopy(2, _path);
 
 	// Read settings from database
-	if (_get_sort_settings.executeStep()) {
-		_view.sort_type = _get_sort_settings.getColumn(0).getInt();
-		_view.sort_order = _get_sort_settings.getColumn(1).getInt();
+	if (_get_sort_settings->executeStep()) {
+		_view.sort_type = _get_sort_settings->getColumn(0).getInt();
+		_view.sort_order = _get_sort_settings->getColumn(1).getInt();
 	}
 
 	return _view;
