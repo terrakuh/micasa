@@ -128,12 +128,15 @@
     <ClCompile Include="image_item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_window.cpp" />
+    <ClCompile Include="moc_scene.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="settings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="image_item.hpp" />
     <ClInclude Include="main_window.hpp" />
     <ClInclude Include="main_window_ui.hpp" />
+    <ClInclude Include="scene.hpp" />
     <ClInclude Include="settings.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

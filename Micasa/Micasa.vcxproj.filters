@@ -30,6 +30,12 @@
     <ClCompile Include="image_item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="moc_scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main_window_ui.hpp">
@@ -42,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="image_item.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>

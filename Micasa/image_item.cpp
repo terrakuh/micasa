@@ -8,7 +8,11 @@ image_item::image_item()
 
 void image_item::center_item()
 {
-	setPos((1920 - pixmap().width()) / 2, (1080 - pixmap().height()) / 2);
+	auto _scale = scale() * _normal_scale;
+
+	setScale(_scale);
+
+	setPos((_scene_size.width() - _current_size.width() * _scale) / 2, (_scene_size.height() - _current_size.height() * _scale) / 2);
 }
 
 void image_item::load_resource(const wchar_t * _path)
@@ -22,6 +26,9 @@ void image_item::load_resource(const wchar_t * _path)
 		if (_movie->isValid()) {
 			_movie->setCacheMode(QMovie::CacheAll);
 			_movie->jumpToFrame(0);
+
+			set_size(_movie->currentPixmap().size());
+			center_item();
 
 			QTimer::singleShot(_movie->nextFrameDelay(), [&]() {
 				show_next_movie_frame();
@@ -42,6 +49,7 @@ void image_item::load_resource(const wchar_t * _path)
 		setPixmap(QPixmap(_info.absoluteFilePath()));
 
 		if (!pixmap().isNull()) {
+			set_size(pixmap().size());
 			center_item();
 
 			return;
@@ -60,5 +68,20 @@ void image_item::show_next_movie_frame()
 		QTimer::singleShot(_movie->nextFrameDelay(), [this]() {
 			show_next_movie_frame();
 		});
+	}
+}
+
+void image_item::set_size(const QSize & _size)
+{
+	auto _rect = scene()->sceneRect();
+
+	_current_size = _size;
+	_scene_size.setWidth(_rect.width());
+	_scene_size.setHeight(_rect.height());
+	
+	if (_current_size.width() < _scene_size.width() * 0.95 && _current_size.height() < _scene_size.height() * 0.9) {
+		_normal_scale = 1.0;
+	} else {
+		_normal_scale = std::min(_scene_size.width() * 0.95 / _current_size.width(), _scene_size.height() * 0.9 / _current_size.height());
 	}
 }

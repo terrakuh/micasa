@@ -10,10 +10,8 @@ main_window::main_window()
 	setWindowState(Qt::WindowFullScreen);
 
 	// Create scene
-	auto _size = size();
+	_ui.graphicsView->setScene(_scene = new scene(size()));
 
-	_ui.graphicsView->setScene(new QGraphicsScene(0, 0, _size.width(), _size.height()));
-	_ui.graphicsView->scene()->addItem(_image = new image_item());
 	// Setup background
 	set_background();
 
@@ -32,19 +30,33 @@ main_window::~main_window()
 void main_window::set_background()
 {
 	auto _screen = QApplication::primaryScreen();
+	auto _background = _screen->grabWindow(0);
 
-	_ui.graphicsView->scene()->setBackgroundBrush(QBrush(_screen->grabWindow(0)));
+	// Draken background
+	QPainter _painter(&_background);
+
+	_painter.setBrush(QColor(0, 0, 0, 114));
+	_painter.drawRect(_background.rect());
+
+	_scene->setBackgroundBrush(_background);
 }
 
 image_item * main_window::get_image()
 {
-	return _image;
+	return _scene->get_image();
 }
 
 void main_window::keyPressEvent(QKeyEvent * _event)
 {
 	if (_event->key() == Qt::Key_Escape) {
-		QApplication::quit();
+		_scene->close_animation_and_quit();
 		_event->accept();
 	}
+}
+
+void main_window::showEvent(QShowEvent * _event)
+{
+	_scene->show_animation();
+
+	QMainWindow::showEvent(_event);
 }

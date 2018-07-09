@@ -11,8 +11,8 @@
 #include <QtCore\QFileInfo>
 
 #include "main_window_ui.hpp"
-#include "image_item.hpp"
 #include "settings.hpp"
+#include "scene.hpp"
 
 
 class main_window : public QMainWindow
@@ -25,8 +25,9 @@ public:
 
 protected:
 	virtual void keyPressEvent(QKeyEvent * _event) override;
+	virtual void showEvent(QShowEvent * event) override;
 
 private:
 	Ui_MainWindow _ui;
-	image_item * _image;
+	scene * _scene;
 };
