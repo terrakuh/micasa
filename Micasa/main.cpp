@@ -1,6 +1,7 @@
 ﻿#include "main_window.hpp"
 
 #include <QtWidgets\QApplication>
+#include <QtCore\QResource>
 #include <Windows.h>
 
 
@@ -20,6 +21,10 @@ int main(int argc, char ** argv)
 #endif
 
 	QApplication app(_argc, reinterpret_cast<char**>(_argv));
+	
+	// Register resources
+	QResource::registerResource("resources.rcc");
+	
 	main_window _main;
 
 #if not defined(_DEBUG)

@@ -3,6 +3,13 @@
 scene::scene(const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height())
 {
 	addItem(_image = new image_item());
+	
+	auto _close = new pixmap_item(RESOURCE_CLOSE_BUTTON, std::bind(&scene::close_animation_and_quit, this));
+
+	_close->setPos(_size.width() - _close->boundingRect().width(), 0);
+	_close->setZValue(ZORDER_CLOSE_BUTTON);
+
+	addItem(_close);
 }
 
 void scene::set_image_scale(double _factor)

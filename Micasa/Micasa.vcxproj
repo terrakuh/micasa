@@ -129,13 +129,16 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_window.cpp" />
     <ClCompile Include="moc_scene.cpp" />
+    <ClCompile Include="pixmap_item.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="settings.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="config.hpp" />
     <ClInclude Include="image_item.hpp" />
     <ClInclude Include="main_window.hpp" />
     <ClInclude Include="main_window_ui.hpp" />
+    <ClInclude Include="pixmap_item.hpp" />
     <ClInclude Include="scene.hpp" />
     <ClInclude Include="settings.hpp" />
   </ItemGroup>

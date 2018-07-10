@@ -6,6 +6,8 @@
 #include <QtCore\QPropertyAnimation>
 
 #include "image_item.hpp"
+#include "pixmap_item.hpp"
+#include "config.hpp"
 
 
 class scene : public QGraphicsScene

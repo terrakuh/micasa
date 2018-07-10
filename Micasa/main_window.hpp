@@ -29,6 +29,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent * _event) override;
 	virtual void showEvent(QShowEvent * _event) override;
 	virtual void contextMenuEvent(QContextMenuEvent * _event) override;
+
 private:
 	Ui_MainWindow _ui;
 	scene * _scene;

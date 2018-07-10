@@ -36,6 +36,9 @@
     <ClCompile Include="moc_scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pixmap_item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main_window_ui.hpp">
@@ -52,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="scene.hpp">
       <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pixmap_item.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="config.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
