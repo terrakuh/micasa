@@ -2,6 +2,8 @@
 
 #include <QtWidgets\QApplication>
 #include <QtCore\QResource>
+#include <QtCore\QDir>
+#include <QtCore\QFileInfo>
 #include <Windows.h>
 
 
@@ -21,9 +23,10 @@ int main(int argc, char ** argv)
 #endif
 
 	QApplication app(_argc, reinterpret_cast<char**>(_argv));
+	QDir::setCurrent(QFileInfo(QString::fromWCharArray(_argv[0])).absolutePath());
 	
 	// Register resources
-	QResource::registerResource("resources.rcc");
+	QResource::registerResource(QDir::currentPath() + "/resources.rcc");
 	
 	main_window _main;
 
