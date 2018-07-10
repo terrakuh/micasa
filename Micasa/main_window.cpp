@@ -5,6 +5,16 @@ main_window::main_window()
 	_ui.setupUi(this);
 	_ui.retranslateUi(this);
 
+	_context_menu.addAction("Play", []() {
+
+	});
+	_context_menu.addAction("Pause", []() {
+
+	});
+	_context_menu.addAction("Reverse", []() {
+		puts("reverse");
+	});
+
 	// Open fullscreen
 	setWindowFlags(Qt::FramelessWindowHint);
 	setWindowState(Qt::WindowFullScreen);
@@ -59,4 +69,10 @@ void main_window::showEvent(QShowEvent * _event)
 	_scene->show_animation();
 
 	QMainWindow::showEvent(_event);
+}
+
+void main_window::contextMenuEvent(QContextMenuEvent * _event)
+{
+	_context_menu.exec(_event->globalPos());
+	_event->accept();
 }

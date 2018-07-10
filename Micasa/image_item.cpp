@@ -47,7 +47,7 @@ void image_item::load_resource(const wchar_t * _path)
 	} // Try image
 	else {
 		setPixmap(QPixmap(_info.absoluteFilePath()));
-
+		
 		if (!pixmap().isNull()) {
 			set_size(pixmap().size());
 			center_item();
@@ -57,6 +57,10 @@ void image_item::load_resource(const wchar_t * _path)
 	}
 
 	_movie = nullptr;
+}
+
+void image_item::contextMenuEvent(QGraphicsSceneContextMenuEvent * _event)
+{
 }
 
 void image_item::show_next_movie_frame()

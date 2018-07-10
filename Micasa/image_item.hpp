@@ -1,10 +1,11 @@
 #pragma once
 
-#include <functional>
+#include <algorithm>
 #include <QtWidgets\QApplication>
 #include <QtWidgets\QDesktopWidget>
 #include <QtWidgets\QGraphicsItem>
 #include <QtWidgets\QGraphicsScene>
+#include <QtWidgets\QMenu>
 #include <QtGui\QCursor>
 #include <QtGui\QScreen>
 #include <QtGui\QPixmap>
@@ -19,6 +20,9 @@ public:
 	image_item();
 	void center_item();
 	void load_resource(const wchar_t * _path);
+
+protected:
+	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override;
 
 private:
 	QSize _current_size;

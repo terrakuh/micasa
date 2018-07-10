@@ -21,7 +21,12 @@ public:
 	void close_animation_and_quit();
 	double get_image_scale();
 	image_item * get_image();
-
+	
 private:
+	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override
+	{
+		puts("hi");
+	}
+
 	image_item * _image;
 };
