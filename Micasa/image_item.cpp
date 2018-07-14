@@ -13,7 +13,7 @@ void image_item::center_item()
 	setPos((_scene_size.width() - _current_size.width() * _scale) / 2, (_scene_size.height() - _current_size.height() * _scale) / 2);
 }
 
-void image_item::load_resource(const wchar_t * _path)
+bool image_item::load_resource(const wchar_t * _path)
 {
 	QFileInfo _info(QString::fromWCharArray(_path));
 	
@@ -36,7 +36,7 @@ void image_item::load_resource(const wchar_t * _path)
 				show_next_movie_frame();
 			});
 
-			return;
+			return true;
 		}
 
 		delete _movie;
@@ -55,11 +55,13 @@ void image_item::load_resource(const wchar_t * _path)
 
 			center_item();
 
-			return;
+			return true;
 		}
 	}
 
 	_movie = nullptr;
+
+	return false;
 }
 
 void image_item::contextMenuEvent(QGraphicsSceneContextMenuEvent * _event)

@@ -21,7 +21,7 @@ class image_item : public QGraphicsPixmapItem, public viewable_item
 public:
 	image_item();
 	virtual void center_item() override;
-	virtual void load_resource(const wchar_t * _path) override;
+	virtual bool load_resource(const wchar_t * _path) override;
 
 protected:
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override;

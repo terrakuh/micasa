@@ -31,10 +31,12 @@ int main(int argc, char ** argv)
 	main_window _main;
 
 #if not defined(_DEBUG)
-	_main.get_image()->load_resource(_argv[1]);
+	if (!_main.get_image()->load_resource(_argv[1])) {
 #else
-	_main.get_scene()->get_image()->load_resource(L"p:/invalid.jpg");
+	if (!_main.get_scene()->get_image()->load_resource(L"p:/test.jpg")) {
 #endif
+		_main.get_scene()->get_image()->load_resource(L"" RESOURCE_INVALID_IMAGE);
+	}
 
 	_main.show();
 
