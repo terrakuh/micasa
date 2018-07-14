@@ -23,11 +23,27 @@ public:
 	void close_animation_and_quit();
 	double get_image_scale();
 	image_item * get_image();
-	
+
 private:
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override
 	{
 		puts("hi");
+	}
+	virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * _event) override
+	{
+		for (auto _item : items()) {
+			if (_item != _image) {
+				_item->hide();
+			}
+		}
+	}
+	virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent * _event) override
+	{
+		for (auto _item : items()) {
+			if (_item != _image) {
+				_item->show();
+			}
+		}
 	}
 
 	image_item * _image;

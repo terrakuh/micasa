@@ -3,7 +3,7 @@
 scene::scene(const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height())
 {
 	addItem(_image = new image_item());
-	
+
 	auto _close = new pixmap_item(RESOURCE_CLOSE_BUTTON, std::bind(&scene::close_animation_and_quit, this));
 
 	_close->setPos(_size.width() - _close->boundingRect().width(), 0);
@@ -25,7 +25,7 @@ void scene::show_animation()
 	_animation->setStartValue(0.0);
 	_animation->setEndValue(1.0);
 	_animation->setEasingCurve(QEasingCurve::OutCubic);
-	_animation->setDuration(600);
+	_animation->setDuration(750);
 
 	_animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
@@ -37,7 +37,7 @@ void scene::close_animation_and_quit()
 	_animation->setStartValue(1.0);
 	_animation->setEndValue(0.0);
 	_animation->setEasingCurve(QEasingCurve::InCubic);
-	_animation->setDuration(200);
+	_animation->setDuration(250);
 
 	_animation->start(QAbstractAnimation::DeleteWhenStopped);
 

@@ -2,7 +2,6 @@
 
 #include <functional>
 #include <QtWidgets\QGraphicsItem>
-#include <QtWidgets\QGraphicsSceneEvent>
 #include <QtGui\QPixmap>
 #include <QtGui\QCursor>
 

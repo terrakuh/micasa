@@ -8,9 +8,7 @@ image_item::image_item()
 
 void image_item::center_item()
 {
-	auto _scale = scale() * _normal_scale;
-
-	setScale(_scale);
+	auto _scale = scale();
 
 	setPos((_scene_size.width() - _current_size.width() * _scale) / 2, (_scene_size.height() - _current_size.height() * _scale) / 2);
 }
@@ -18,7 +16,7 @@ void image_item::center_item()
 void image_item::load_resource(const wchar_t * _path)
 {
 	QFileInfo _info(QString::fromWCharArray(_path));
-
+	
 	// Is movie
 	if (QMovie::supportedFormats().contains(_info.suffix().toUtf8())) {
 		_movie = new QMovie(_info.absoluteFilePath());
@@ -26,19 +24,17 @@ void image_item::load_resource(const wchar_t * _path)
 		if (_movie->isValid()) {
 			_movie->setCacheMode(QMovie::CacheAll);
 			_movie->jumpToFrame(0);
+			_current_size = _movie->currentPixmap().size();
 
-			set_size(_movie->currentPixmap().size());
+			if (scale_view(_current_size)) {
+				_movie->setScaledSize(_current_size);
+			}
+
 			center_item();
 
 			QTimer::singleShot(_movie->nextFrameDelay(), [&]() {
 				show_next_movie_frame();
 			});
-			//_current_size = _movie->currentImage().size();
-			//resize(_current_size);
-			//_movie->start();
-			//_ui.label->setMovie(_movie);
-
-			//show();
 
 			return;
 		}
@@ -46,10 +42,17 @@ void image_item::load_resource(const wchar_t * _path)
 		delete _movie;
 	} // Try image
 	else {
-		setPixmap(QPixmap(_info.absoluteFilePath()));
+		_original_image = QPixmap(_info.absoluteFilePath());
 		
-		if (!pixmap().isNull()) {
-			set_size(pixmap().size());
+		if (!_original_image.isNull()) {
+			_current_size = _original_image.size();
+
+			if (scale_view(_current_size)) {
+				setPixmap(_original_image.scaled(_current_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			} else {
+				setPixmap(_original_image);
+			}
+
 			center_item();
 
 			return;
@@ -75,17 +78,22 @@ void image_item::show_next_movie_frame()
 	}
 }
 
-void image_item::set_size(const QSize & _size)
+bool image_item::scale_view(QSize & _size)
 {
 	auto _rect = scene()->sceneRect();
 
-	_current_size = _size;
 	_scene_size.setWidth(_rect.width());
 	_scene_size.setHeight(_rect.height());
-	
-	if (_current_size.width() < _scene_size.width() * 0.95 && _current_size.height() < _scene_size.height() * 0.9) {
-		_normal_scale = 1.0;
-	} else {
-		_normal_scale = std::min(_scene_size.width() * 0.95 / _current_size.width(), _scene_size.height() * 0.9 / _current_size.height());
+
+	if (_size.width() < _scene_size.width() * 0.95 && _size.height() < _scene_size.height() * 0.9) {
+		return false;
 	}
+	
+	// Rescale
+	auto _scale = std::min(_scene_size.width() * 0.95 / _size.width(), _scene_size.height() * 0.9 / _size.height());
+
+	_size.setWidth(_size.width() * _scale);
+	_size.setHeight(_size.height() * _scale);
+
+	return true;
 }

@@ -51,9 +51,9 @@ void main_window::set_background()
 	_scene->setBackgroundBrush(_background);
 }
 
-image_item * main_window::get_image()
+scene * main_window::get_scene()
 {
-	return _scene->get_image();
+	return _scene;
 }
 
 void main_window::keyPressEvent(QKeyEvent * _event)

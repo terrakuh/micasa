@@ -23,7 +23,7 @@ public:
 	main_window();
 	~main_window();
 	void set_background();
-	image_item * get_image();
+	scene * get_scene();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent * _event) override;

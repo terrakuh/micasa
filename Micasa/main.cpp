@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
 #if not defined(_DEBUG)
 	_main.get_image()->load_resource(_argv[1]);
 #else
-	_main.get_image()->load_resource(L"p:/test.gif");
+	_main.get_scene()->get_image()->load_resource(L"p:/invalid.jpg");
 #endif
 
 	_main.show();
