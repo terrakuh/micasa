@@ -15,6 +15,9 @@ main_window::main_window()
 		puts("reverse");
 	});
 
+	// Load icon
+	setWindowIcon(QIcon(QPixmap(RESOURCE_ICON)));
+
 	// Open fullscreen
 	setWindowFlags(Qt::FramelessWindowHint);
 	setWindowState(Qt::WindowFullScreen);

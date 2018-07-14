@@ -31,7 +31,7 @@ int main(int argc, char ** argv)
 	main_window _main;
 
 #if not defined(_DEBUG)
-	if (!_main.get_image()->load_resource(_argv[1])) {
+	if (!_main.get_scene()->get_image()->load_resource(_argv[1])) {
 #else
 	if (!_main.get_scene()->get_image()->load_resource(L"p:/test.jpg")) {
 #endif
