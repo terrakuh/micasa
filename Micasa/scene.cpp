@@ -10,6 +10,8 @@ scene::scene(const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.he
 	_close->setZValue(ZORDER_CLOSE_BUTTON);
 
 	addItem(_close);
+
+	set_background();
 }
 
 void scene::set_image_scale(double _factor)
@@ -42,6 +44,30 @@ void scene::close_animation_and_quit()
 	_animation->start(QAbstractAnimation::DeleteWhenStopped);
 
 	connect(_animation, &QPropertyAnimation::finished, &QApplication::quit);
+}
+
+void scene::blacken_background(bool _blacken)
+{
+	if (_blacken) {
+		setBackgroundBrush(QColor(0, 0, 0));
+	} else {
+		setBackgroundBrush(_background);
+	}
+}
+
+void scene::set_background()
+{
+	auto _screen = QApplication::primaryScreen();
+	
+	_background = _screen->grabWindow(0);
+
+	// Draken background
+	QPainter _painter(&_background);
+
+	_painter.setBrush(QColor(0, 0, 0, 114));
+	_painter.drawRect(_background.rect());
+
+	setBackgroundBrush(_background);
 }
 
 double scene::get_image_scale()

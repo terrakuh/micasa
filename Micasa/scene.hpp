@@ -2,6 +2,7 @@
 
 #include <QtWidgets\QGraphicsScene>
 #include <QtWidgets\QGraphicsSceneMouseEvent>
+#include <QtGui\QPainter>
 #include <QtCore\QObject>
 #include <QtCore\QPropertyAnimation>
 
@@ -21,6 +22,8 @@ public:
 	void set_image_scale(double _factor);
 	void show_animation();
 	void close_animation_and_quit();
+	void blacken_background(bool _blacken);
+	void set_background();
 	double get_image_scale();
 	image_item * get_image();
 
@@ -46,5 +49,6 @@ private:
 		}
 	}
 
+	QPixmap _background;
 	image_item * _image;
 };

@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
 #if not defined(_DEBUG)
 	if (!_main.get_scene()->get_image()->load_resource(_argv[1])) {
 #else
-	if (!_main.get_scene()->get_image()->load_resource(L"p:/test.jpg")) {
+	if (!_main.get_scene()->get_image()->load_resource(L"p:/test.gif")) {
 #endif
 		_main.get_scene()->get_image()->load_resource(L"" RESOURCE_INVALID_IMAGE);
 	}

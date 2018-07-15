@@ -1,7 +1,11 @@
 #include "image_item.hpp"
+#include "scene.hpp"
+
 
 image_item::image_item()
 {
+	_fullscreen = false;
+
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setCursor(QCursor(Qt::CursorShape::SizeAllCursor));
 }
@@ -16,7 +20,7 @@ void image_item::center_item()
 bool image_item::load_resource(const wchar_t * _path)
 {
 	QFileInfo _info(QString::fromWCharArray(_path));
-	
+
 	// Is movie
 	if (QMovie::supportedFormats().contains(_info.suffix().toUtf8())) {
 		_movie = new QMovie(_info.absoluteFilePath());
@@ -25,9 +29,9 @@ bool image_item::load_resource(const wchar_t * _path)
 			_movie->setCacheMode(QMovie::CacheAll);
 			_movie->jumpToFrame(0);
 			_current_size = _movie->currentPixmap().size();
-
+			
 			if (scale_view(_current_size)) {
-				_movie->setScaledSize(_current_size);
+				//_movie->setScaledSize(_current_size);
 			}
 
 			center_item();
@@ -43,7 +47,7 @@ bool image_item::load_resource(const wchar_t * _path)
 	} // Try image
 	else {
 		_original_image = QPixmap(_info.absoluteFilePath());
-		
+
 		if (!_original_image.isNull()) {
 			_current_size = _original_image.size();
 
@@ -68,10 +72,38 @@ void image_item::contextMenuEvent(QGraphicsSceneContextMenuEvent * _event)
 {
 }
 
+void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)
+{
+	_fullscreen = !_fullscreen;
+
+	// Set image size
+	if (_movie) {
+		_current_size = _movie->currentPixmap().size();
+		
+		if (scale_view(_current_size)) {
+			//_movie->setScaledSize(_current_size);
+		}
+	} else {
+		_current_size = _original_image.size();
+
+		if (scale_view(_current_size)) {
+			setPixmap(_original_image.scaled(_current_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		} else {
+			setPixmap(_original_image);
+		}
+	}
+
+	static_cast<::scene*>(scene())->blacken_background(_fullscreen);
+
+	if (_fullscreen) {
+		center_item();
+	}
+}
+
 void image_item::show_next_movie_frame()
 {
 	if (_movie) {
-		setPixmap(_movie->currentPixmap());
+		setPixmap(_movie->currentPixmap().scaled(_current_size));
 		_movie->jumpToNextFrame();
 
 		QTimer::singleShot(_movie->nextFrameDelay(), [this]() {
@@ -90,9 +122,15 @@ bool image_item::scale_view(QSize & _size)
 	if (_size.width() < _scene_size.width() * 0.95 && _size.height() < _scene_size.height() * 0.9) {
 		return false;
 	}
-	
+
 	// Rescale
-	auto _scale = std::min(_scene_size.width() * 0.95 / _size.width(), _scene_size.height() * 0.9 / _size.height());
+	double _scale;
+
+	if (_fullscreen) {
+		_scale = std::min(static_cast<double>(_scene_size.width()) / _size.width(), static_cast<double>(_scene_size.height()) / _size.height());
+	} else {
+		_scale = std::min(_scene_size.width() * 0.95 / _size.width(), _scene_size.height() * 0.9 / _size.height());
+	}
 
 	_size.setWidth(_size.width() * _scale);
 	_size.setHeight(_size.height() * _scale);

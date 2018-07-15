@@ -22,7 +22,6 @@ class main_window : public QMainWindow
 public:
 	main_window();
 	~main_window();
-	void set_background();
 	scene * get_scene();
 
 protected:

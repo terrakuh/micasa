@@ -25,8 +25,10 @@ public:
 
 protected:
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override;
+	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event) override;
 
 private:
+	bool _fullscreen;
 	QSize _current_size;
 	QSize _scene_size;
 	QMovie * _movie;

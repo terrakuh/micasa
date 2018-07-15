@@ -25,9 +25,6 @@ main_window::main_window()
 	// Create scene
 	_ui.graphicsView->setScene(_scene = new scene(size()));
 
-	// Setup background
-	set_background();
-
 	
 
 	//connect(_ui.pushButton, &QPushButton::clicked, &QApplication::quit);
@@ -38,20 +35,6 @@ main_window::main_window()
 main_window::~main_window()
 {
 	//settings::finalize();
-}
-
-void main_window::set_background()
-{
-	auto _screen = QApplication::primaryScreen();
-	auto _background = _screen->grabWindow(0);
-
-	// Draken background
-	QPainter _painter(&_background);
-
-	_painter.setBrush(QColor(0, 0, 0, 114));
-	_painter.drawRect(_background.rect());
-
-	_scene->setBackgroundBrush(_background);
 }
 
 scene * main_window::get_scene()
