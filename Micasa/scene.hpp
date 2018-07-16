@@ -28,10 +28,10 @@ public:
 	image_item * get_image();
 
 private:
-	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override
+	/*virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override
 	{
 		puts("hi");
-	}
+	}*/
 	virtual void dragEnterEvent(QGraphicsSceneDragDropEvent * _event) override
 	{
 		for (auto _item : items()) {

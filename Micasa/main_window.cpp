@@ -5,16 +5,6 @@ main_window::main_window()
 	_ui.setupUi(this);
 	_ui.retranslateUi(this);
 
-	_context_menu.addAction("Play", []() {
-
-	});
-	_context_menu.addAction("Pause", []() {
-
-	});
-	_context_menu.addAction("Reverse", []() {
-		puts("reverse");
-	});
-
 	// Load icon
 	setWindowIcon(QIcon(QPixmap(RESOURCE_ICON)));
 
@@ -59,6 +49,5 @@ void main_window::showEvent(QShowEvent * _event)
 
 void main_window::contextMenuEvent(QContextMenuEvent * _event)
 {
-	_context_menu.exec(_event->globalPos());
-	_event->accept();
+	_scene->get_image()->get_context_menu().show_active_menu(_event->globalPos());
 }

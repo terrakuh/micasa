@@ -39,6 +39,9 @@
     <ClCompile Include="pixmap_item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="context_menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main_window_ui.hpp">
@@ -67,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="context_menu.hpp">
+      <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

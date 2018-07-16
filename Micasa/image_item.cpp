@@ -29,7 +29,8 @@ bool image_item::load_resource(const wchar_t * _path)
 			_movie->setCacheMode(QMovie::CacheAll);
 			_movie->jumpToFrame(0);
 			_current_size = _movie->currentPixmap().size();
-			
+			_menu.set_active_menu(context_menu::ACTIVE_MENU::MOVIE);
+
 			if (scale_view(_current_size)) {
 				//_movie->setScaledSize(_current_size);
 			}
@@ -50,6 +51,7 @@ bool image_item::load_resource(const wchar_t * _path)
 
 		if (!_original_image.isNull()) {
 			_current_size = _original_image.size();
+			_menu.set_active_menu(context_menu::ACTIVE_MENU::IMAGE);
 
 			if (scale_view(_current_size)) {
 				setPixmap(_original_image.scaled(_current_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -68,8 +70,9 @@ bool image_item::load_resource(const wchar_t * _path)
 	return false;
 }
 
-void image_item::contextMenuEvent(QGraphicsSceneContextMenuEvent * _event)
+context_menu & image_item::get_context_menu()
 {
+	return _menu;
 }
 
 void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)
@@ -85,7 +88,7 @@ void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)
 		}
 	} else {
 		_current_size = _original_image.size();
-
+		
 		if (scale_view(_current_size)) {
 			setPixmap(_original_image.scaled(_current_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		} else {

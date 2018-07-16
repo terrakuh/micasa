@@ -3,7 +3,6 @@
 #include <QtWidgets\QApplication>
 #include <QtWidgets\QDesktopWidget>
 #include <QtWidgets\QGraphicsItem>
-#include <QtWidgets\QMenu>
 #include <QtGui\QCursor>
 #include <QtGui\QScreen>
 #include <QtGui\QPixmap>
@@ -32,5 +31,4 @@ protected:
 private:
 	Ui_MainWindow _ui;
 	scene * _scene;
-	QMenu _context_menu;
 };
