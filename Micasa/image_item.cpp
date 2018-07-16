@@ -2,12 +2,65 @@
 #include "scene.hpp"
 
 
-image_item::image_item()
+image_item::image_item() : _context_menu(this)
 {
 	_fullscreen = false;
 
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setCursor(QCursor(Qt::CursorShape::SizeAllCursor));
+}
+
+void image_item::open_with()
+{
+}
+
+void image_item::play()
+{
+}
+
+void image_item::pause()
+{
+}
+
+void image_item::rewind()
+{
+}
+
+void image_item::reverse()
+{
+}
+
+void image_item::copy()
+{
+}
+
+void image_item::delete_from_disk()
+{
+}
+
+void image_item::hide()
+{
+}
+
+void image_item::cut()
+{
+}
+
+void image_item::resize()
+{
+}
+
+void image_item::rotate_clockwise()
+{
+}
+
+void image_item::rotate_counterclockwise()
+{
+}
+
+void image_item::quit()
+{
+	static_cast<::scene*>(scene())->close_animation_and_quit();
 }
 
 void image_item::center_item()
@@ -29,7 +82,7 @@ bool image_item::load_resource(const wchar_t * _path)
 			_movie->setCacheMode(QMovie::CacheAll);
 			_movie->jumpToFrame(0);
 			_current_size = _movie->currentPixmap().size();
-			_menu.set_active_menu(context_menu::ACTIVE_MENU::MOVIE);
+			_context_menu.set_active_menu(context_menu::ACTIVE_MENU::MOVIE);
 
 			if (scale_view(_current_size)) {
 				//_movie->setScaledSize(_current_size);
@@ -51,7 +104,7 @@ bool image_item::load_resource(const wchar_t * _path)
 
 		if (!_original_image.isNull()) {
 			_current_size = _original_image.size();
-			_menu.set_active_menu(context_menu::ACTIVE_MENU::IMAGE);
+			_context_menu.set_active_menu(context_menu::ACTIVE_MENU::IMAGE);
 
 			if (scale_view(_current_size)) {
 				setPixmap(_original_image.scaled(_current_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -72,7 +125,7 @@ bool image_item::load_resource(const wchar_t * _path)
 
 context_menu & image_item::get_context_menu()
 {
-	return _menu;
+	return _context_menu;
 }
 
 void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)
@@ -140,3 +193,5 @@ bool image_item::scale_view(QSize & _size)
 
 	return true;
 }
+
+

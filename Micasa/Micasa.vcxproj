@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="config.hpp" />
     <ClInclude Include="context_menu.hpp" />
+    <ClInclude Include="editable_item.hpp" />
     <ClInclude Include="image_item.hpp" />
     <ClInclude Include="main_window.hpp" />
     <ClInclude Include="main_window_ui.hpp" />
