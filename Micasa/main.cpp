@@ -43,13 +43,14 @@ int main(int argc, char ** argv)
 
 		main_window _main;
 
+		// Load image
+		_main.get_scene()->open(
 #if not defined(_DEBUG)
-		if (!_main.get_scene()->open(_argv[1])) {
+		_argv[1]
 #else
-		if (!_main.get_scene()->open(L"p:/test.jpg")) {
+		L"p:/test.jpg"
 #endif
-			_main.get_scene()->get_image()->load_resource(L"" RESOURCE_INVALID_IMAGE);
-		}
+		);
 
 		_main.show();
 

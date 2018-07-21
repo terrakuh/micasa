@@ -45,12 +45,14 @@ protected:
 
 private:
 	bool _fullscreen;
+	bool _play;
+	bool _reversed;
 	QSize _current_size;
 	QSize _scene_size;
 	QMovie * _movie;
 	QPixmap _original_image;
 	context_menu _context_menu;
 
-	void show_next_movie_frame();
+	void show_next_movie_frame(const void * _address);
 	bool scale_view(QSize & _size);
 };
