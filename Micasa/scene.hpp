@@ -6,12 +6,12 @@
 #include <QtGui\QKeyEvent>
 #include <QtCore\QObject>
 #include <QtCore\QPropertyAnimation>
-#include <future>
 
 #include "folder_view.hpp"
 #include "image_item.hpp"
 #include "pixmap_item.hpp"
 #include "config.hpp"
+#include "thread_pool.h"
 
 
 class scene : public QGraphicsScene

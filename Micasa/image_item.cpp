@@ -74,6 +74,8 @@ bool image_item::load_resource(const wchar_t * _path)
 {
 	QFileInfo _info(QString::fromWCharArray(_path));
 
+	_movie = nullptr;
+
 	// Is movie
 	if (QMovie::supportedFormats().contains(_info.suffix().toUtf8())) {
 		_movie = new QMovie(_info.absoluteFilePath());
@@ -118,8 +120,6 @@ bool image_item::load_resource(const wchar_t * _path)
 		}
 	}
 
-	_movie = nullptr;
-
 	return false;
 }
 
@@ -130,7 +130,7 @@ context_menu & image_item::get_context_menu()
 
 const wchar_t * image_item::get_filter_rule()
 {
-	return LR"(.+?\.(?:jpeg|jpg|png|bmp|tiff|git|webp)$)";
+	return LR"(.+?\.(?:jpeg|jpg|png|bmp|tiff|gif|webp)$)";
 }
 
 void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)

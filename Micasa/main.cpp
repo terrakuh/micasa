@@ -1,4 +1,5 @@
 ﻿#include "main_window.hpp"
+#include "thread_pool.h"
 
 #include <QtWidgets\QApplication>
 #include <QtCore\QResource>
@@ -36,6 +37,9 @@ int main(int argc, char ** argv)
 
 		// Register resources
 		QResource::registerResource(QDir::currentPath() + "/resources.rcc");
+
+		// Create thread pool
+		thread_pool::global_thread_pool().reset(new thread_pool(1));
 
 		main_window _main;
 
