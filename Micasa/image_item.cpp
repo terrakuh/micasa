@@ -7,6 +7,7 @@ image_item::image_item() : _context_menu(this)
 	_fullscreen = false;
 	_play = false;
 	_reversed = false;
+	_movie_id = 0;
 
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setCursor(QCursor(Qt::CursorShape::SizeAllCursor));
@@ -22,7 +23,7 @@ void image_item::play()
 		_play = true;
 
 		QTimer::singleShot(0, [&]() {
-			show_next_movie_frame(_movie);
+			show_next_movie_frame(++_movie_id);
 		});
 	}
 }
@@ -91,17 +92,18 @@ bool image_item::load_resource(const wchar_t * _path)
 	QFileInfo _info(QString::fromWCharArray(_path));
 	auto _recurred = false;
 
-	_movie = nullptr;
+	_movie.reset();
 
 	// Is movie
 	if (QMovie::supportedFormats().contains(_info.suffix().toUtf8())) {
-		_movie = new QMovie(_info.absoluteFilePath());
+		_movie.reset(new QMovie(_info.absoluteFilePath()));
 
 		if (_movie->isValid()) {
-			_movie->setCacheMode(QMovie::CacheAll);
+			//_movie->setCacheMode(QMovie::CacheAll);
 			_movie->jumpToFrame(0);
-			_current_size = _movie->currentPixmap().size();
 			_context_menu.set_active_menu(context_menu::ACTIVE_MENU::MOVIE);
+
+			_current_size = _movie->currentPixmap().size();
 			_play = true;
 			_reversed = false;
 
@@ -109,14 +111,13 @@ bool image_item::load_resource(const wchar_t * _path)
 
 			QTimer::singleShot(0, [&]() {
 				center_item();
-				show_next_movie_frame(_movie);
+				show_next_movie_frame(++_movie_id);
 			});
 
 			return true;
 		}
 
-		delete _movie;
-		_movie = nullptr;
+		_movie.reset();
 	} // Try image
 	else {
 		_original_image = QPixmap(_info.absoluteFilePath());
@@ -167,13 +168,13 @@ void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)
 	// Set image size
 	if (_movie) {
 		_current_size = _movie->currentPixmap().size();
-		
+
 		if (scale_view(_current_size)) {
 			//_movie->setScaledSize(_current_size);
 		}
 	} else {
 		_current_size = _original_image.size();
-		
+
 		if (scale_view(_current_size)) {
 			setPixmap(_original_image.scaled(_current_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		} else {
@@ -188,9 +189,9 @@ void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)
 	}
 }
 
-void image_item::show_next_movie_frame(const void * _address)
+void image_item::show_next_movie_frame(int _id)
 {
-	if (_movie == _address && _play) {
+	if (_movie && _movie_id == _id && _play) {
 		setPixmap(_movie->currentPixmap().scaled(_current_size));
 
 		// Jump to next frame
@@ -208,7 +209,7 @@ void image_item::show_next_movie_frame(const void * _address)
 
 		// Schedule show
 		QTimer::singleShot(_movie->nextFrameDelay(), [=]() {
-			show_next_movie_frame(_address);
+			show_next_movie_frame(_id);
 		});
 	}
 }

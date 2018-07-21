@@ -43,6 +43,20 @@ bool folder_view::load_files(const wchar_t * _path)
 	CComPtr<IWebBrowser2> _browser;
 
 	if (SUCCEEDED(CoCreateInstance(CLSID_ShellBrowserWindow, nullptr, CLSCTX_INPROC_SERVER | CLSCTX_INPROC_HANDLER | CLSCTX_LOCAL_SERVER, IID_PPV_ARGS(&_browser)))) {
+		struct guard
+		{
+			CComPtr<IWebBrowser2> _browser;
+
+			guard(CComPtr<IWebBrowser2> & _browser) : _browser(_browser)
+			{
+			}
+			~guard()
+			{
+				_browser->Stop();
+				_browser->Quit();
+			}
+		} _guard(_browser);
+
 		CComPtr<IServiceProvider> _provider;
 		CComVariant _empty;
 		CComVariant _target;

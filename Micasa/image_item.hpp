@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
 #include <QtWidgets\QApplication>
 #include <QtWidgets\QDesktopWidget>
 #include <QtWidgets\QGraphicsItem>
@@ -47,12 +48,13 @@ private:
 	bool _fullscreen;
 	bool _play;
 	bool _reversed;
+	int _movie_id;
 	QSize _current_size;
 	QSize _scene_size;
-	QMovie * _movie;
+	std::unique_ptr<QMovie> _movie;
 	QPixmap _original_image;
 	context_menu _context_menu;
 
-	void show_next_movie_frame(const void * _address);
+	void show_next_movie_frame(int _id);
 	bool scale_view(QSize & _size);
 };
