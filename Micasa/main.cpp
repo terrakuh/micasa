@@ -13,32 +13,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 int main(int argc, char ** argv)
 #endif
 {
-	int _argc = 0;
-	auto _argv = CommandLineToArgvW(GetCommandLineW(), &_argc);
+	if (SUCCEEDED(CoInitializeEx(nullptr, COINIT_MULTITHREADED))) {
+		struct terminator
+		{
+			~terminator()
+			{
+				CoUninitialize();
+			}
+		} _terminator;
+
+		int _argc = 0;
+		auto _argv = CommandLineToArgvW(GetCommandLineW(), &_argc);
 
 #if not defined(_DEBUG)
-	if (_argc <= 1 || !_argv) {
-		return 1;
-	}
+		if (_argc <= 1 || !_argv) {
+			return 1;
+		}
 #endif
 
-	QApplication app(_argc, reinterpret_cast<char**>(_argv));
-	QDir::setCurrent(QFileInfo(QString::fromWCharArray(_argv[0])).absolutePath());
-	
-	// Register resources
-	QResource::registerResource(QDir::currentPath() + "/resources.rcc");
-	
-	main_window _main;
+		QApplication app(_argc, reinterpret_cast<char**>(_argv));
+		QDir::setCurrent(QFileInfo(QString::fromWCharArray(_argv[0])).absolutePath());
+
+		// Register resources
+		QResource::registerResource(QDir::currentPath() + "/resources.rcc");
+
+		main_window _main;
 
 #if not defined(_DEBUG)
-	if (!_main.get_scene()->get_image()->load_resource(_argv[1])) {
+		if (!_main.get_scene()->open(_argv[1])) {
 #else
-	if (!_main.get_scene()->get_image()->load_resource(L"p:/test.jpg")) {
+		if (!_main.get_scene()->open(L"p:/test.jpg")) {
 #endif
-		_main.get_scene()->get_image()->load_resource(L"" RESOURCE_INVALID_IMAGE);
+			_main.get_scene()->get_image()->load_resource(L"" RESOURCE_INVALID_IMAGE);
+		}
+
+		_main.show();
+
+		return app.exec();
 	}
 
-	_main.show();
-
-	return app.exec();
+	return 1;
 }

@@ -1,5 +1,8 @@
 #include "scene.hpp"
 
+
+std::wregex scene::_filter(image_item::get_filter_rule(), std::regex_constants::icase);
+
 scene::scene(const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height())
 {
 	addItem(_image = new image_item());
@@ -70,6 +73,16 @@ void scene::set_background()
 	setBackgroundBrush(_background);
 }
 
+bool scene::open(const wchar_t * _path)
+{
+	std::async([this](const std::wstring & _path) {
+		_folder_view.load_files(QFileInfo(QString::fromStdWString(_path)).absolutePath().toStdWString().c_str());
+		_folder_view.select_item(_path.c_str());
+	}, _path);
+
+	return _image->load_resource(_path);
+}
+
 double scene::get_image_scale()
 {
 	return _image->scale();
@@ -78,4 +91,28 @@ double scene::get_image_scale()
 image_item * scene::get_image()
 {
 	return _image;
+}
+
+void scene::keyPressEvent(QKeyEvent * _event)
+{
+	std::wstring _file;
+
+	switch (_event->key()) {
+	case Qt::Key_Right:
+		_file = _folder_view.neighbor_item(true, _filter);
+
+		break;
+	case Qt::Key_Left:
+		_file = _folder_view.neighbor_item(false, _filter);
+
+		break;
+	default:
+		QGraphicsScene::keyPressEvent(_event);
+
+		return;
+	}
+
+	if (!_file.empty()) {
+		_image->load_resource(_file.c_str());
+	}
 }

@@ -1,17 +1,17 @@
 #include "folder_view.hpp"
 
-folder_view::folder_view(const wchar_t * _path)
+folder_view::folder_view()
 {
 	_current = 0;
-
-	// Load files
-	if (!load_files(_path)) {
-		throw std::exception();
-	}
 }
 
 void folder_view::select_item(const wchar_t * _path)
 {
+	if (!valid()) {
+		return;
+	}
+
+	std::lock_guard<std::mutex> _lck(_mutex);
 	DWORD _max_items;
 	std::experimental::filesystem::path _p = _path;
 
@@ -60,6 +60,8 @@ bool folder_view::load_files(const wchar_t * _path)
 						CComPtr<IFolderView> _view;
 
 						if (SUCCEEDED(_shell_view->QueryInterface(IID_PPV_ARGS(&_view)))) {
+							std::lock_guard<std::mutex> _lck(_mutex);
+
 							_items.Release();
 
 							if (SUCCEEDED(_view->Items(SVGIO_ALLVIEW | SVGIO_FLAG_VIEWORDER, IID_PPV_ARGS(&_items)))) {
@@ -75,21 +77,39 @@ bool folder_view::load_files(const wchar_t * _path)
 	return false;
 }
 
-std::wstring folder_view::neighbor_item(bool _next)
+bool folder_view::valid() const
 {
-	CComPtr<IShellItem> _item;
+	return _items;
+}
 
-	while (SUCCEEDED(_items->GetItemAt(_current + (_next ? 1 : -1), &_item))) {
+std::wstring folder_view::neighbor_item(bool _next, const std::wregex & _filter)
+{
+	std::lock_guard<std::mutex> _lck(_mutex);
+
+	while (valid()) {
+		CComPtr<IShellItem> _item;
 		LPWSTR _name;
+		SFGAOF _out = 0;
+
+		if (FAILED(_items->GetItemAt(_current + (_next ? 1 : -1), &_item))) {
+			break;
+		}
 
 		_current += _next ? 1 : -1;
 
-		if (SUCCEEDED(_item->GetDisplayName(SIGDN_FILESYSPATH, &_name))) {
-			std::wstring _str = _name;
+		_item->GetAttributes(SFGAO_FOLDER, &_out);
+
+		if (!_out && SUCCEEDED(_item->GetDisplayName(SIGDN_FILESYSPATH, &_name))) {
+			// Filter by name
+			if (std::regex_match(_name, _filter)) {
+				std::wstring _str = _name;
+
+				CoTaskMemFree(_name);
+
+				return _str;
+			}
 
 			CoTaskMemFree(_name);
-
-			return _str;
 		}
 	}
 

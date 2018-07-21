@@ -7,16 +7,19 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include <regex>
+#include <mutex>
 #include <experimental\filesystem>
 
 
 class folder_view
 {
 public:
-	folder_view(const wchar_t * _path);
+	folder_view();
 	void select_item(const wchar_t * _path);
 	bool load_files(const wchar_t * _path);
-	std::wstring neighbor_item(bool _next);
+	bool valid() const;
+	std::wstring neighbor_item(bool _next, const std::wregex & _filter);
 
 	/*static void a(const wchar_t * _path)
 	{
@@ -32,6 +35,7 @@ public:
 	}*/
 
 private:
+	std::mutex _mutex;
 	CComPtr<IShellItemArray> _items;
 	int _current;
 

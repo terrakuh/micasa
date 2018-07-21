@@ -135,6 +135,7 @@
     <ClCompile Include="pixmap_item.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="settings.cpp" />
+    <ClCompile Include="thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.hpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="scene.hpp" />
     <ClInclude Include="settings.hpp" />
+    <ClInclude Include="thread_pool.h" />
     <ClInclude Include="viewable_item.hpp" />
   </ItemGroup>
   <ItemGroup>

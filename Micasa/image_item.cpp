@@ -128,6 +128,11 @@ context_menu & image_item::get_context_menu()
 	return _context_menu;
 }
 
+const wchar_t * image_item::get_filter_rule()
+{
+	return LR"(.+?\.(?:jpeg|jpg|png|bmp|tiff|git|webp)$)";
+}
+
 void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)
 {
 	_fullscreen = !_fullscreen;
@@ -183,9 +188,9 @@ bool image_item::scale_view(QSize & _size)
 	double _scale;
 
 	if (_fullscreen) {
-		_scale = std::min(static_cast<double>(_scene_size.width()) / _size.width(), static_cast<double>(_scene_size.height()) / _size.height());
+		_scale = (std::min)(static_cast<double>(_scene_size.width()) / _size.width(), static_cast<double>(_scene_size.height()) / _size.height());
 	} else {
-		_scale = std::min(_scene_size.width() * 0.95 / _size.width(), _scene_size.height() * 0.9 / _size.height());
+		_scale = (std::min)(_scene_size.width() * 0.95 / _size.width(), _scene_size.height() * 0.9 / _size.height());
 	}
 
 	_size.setWidth(_size.width() * _scale);

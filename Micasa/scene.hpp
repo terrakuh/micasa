@@ -3,9 +3,12 @@
 #include <QtWidgets\QGraphicsScene>
 #include <QtWidgets\QGraphicsSceneMouseEvent>
 #include <QtGui\QPainter>
+#include <QtGui\QKeyEvent>
 #include <QtCore\QObject>
 #include <QtCore\QPropertyAnimation>
+#include <future>
 
+#include "folder_view.hpp"
 #include "image_item.hpp"
 #include "pixmap_item.hpp"
 #include "config.hpp"
@@ -24,10 +27,12 @@ public:
 	void close_animation_and_quit();
 	void blacken_background(bool _blacken);
 	void set_background();
+	bool open(const wchar_t * _path);
 	double get_image_scale();
 	image_item * get_image();
 
-private:
+protected:
+	virtual void keyPressEvent(QKeyEvent * _event) override;
 	/*virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override
 	{
 		puts("hi");
@@ -49,6 +54,9 @@ private:
 		}
 	}
 
+private:
+	static std::wregex _filter;
+	folder_view _folder_view;
 	QPixmap _background;
 	image_item * _image;
 };

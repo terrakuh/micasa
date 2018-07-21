@@ -38,6 +38,7 @@ public:
 	virtual void center_item() override;
 	virtual bool load_resource(const wchar_t * _path) override;
 	context_menu & get_context_menu();
+	static const wchar_t * get_filter_rule();
 
 protected:
 	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event) override;
