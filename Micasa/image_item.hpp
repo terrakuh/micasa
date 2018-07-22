@@ -37,6 +37,7 @@ public:
 	virtual void rotate_counterclockwise() override;
 	virtual void quit() override;
 	virtual void center_item() override;
+	void toggle_fullscreen();
 	virtual bool load_resource(const wchar_t * _path) override;
 	context_menu & get_context_menu();
 	static const wchar_t * get_filter_rule();

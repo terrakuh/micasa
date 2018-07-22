@@ -28,11 +28,14 @@ public:
 	void blacken_background(bool _blacken);
 	void set_background();
 	bool open(const wchar_t * _path);
+	bool next_item(bool _prev);
 	double get_image_scale();
 	image_item * get_image();
 
 protected:
+	virtual void timerEvent(QTimerEvent * _event) override;
 	virtual void keyPressEvent(QKeyEvent * _event) override;
+	virtual void keyReleaseEvent(QKeyEvent * _event) override;
 	/*virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override
 	{
 		puts("hi");
@@ -55,6 +58,7 @@ protected:
 	}
 
 private:
+	int _diashow_timer;
 	static std::wregex _filter;
 	folder_view _folder_view;
 	QPixmap _background;

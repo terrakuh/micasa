@@ -87,6 +87,28 @@ void image_item::center_item()
 	setPos((_scene_size.width() - _current_size.width() * _scale) / 2, (_scene_size.height() - _current_size.height() * _scale) / 2);
 }
 
+void image_item::toggle_fullscreen()
+{
+	_fullscreen = !_fullscreen;
+
+	// Set image size
+	if (_movie) {
+		_current_size = _movie->currentPixmap().size();
+
+		if (scale_view(_current_size)) {
+			//_movie->setScaledSize(_current_size);
+		}
+	} else {
+		_current_size = _original_image.size();
+
+		if (scale_view(_current_size)) {
+			setPixmap(_original_image.scaled(_current_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		} else {
+			setPixmap(_original_image);
+		}
+	}
+}
+
 bool image_item::load_resource(const wchar_t * _path)
 {
 	QFileInfo _info(QString::fromWCharArray(_path));
@@ -163,30 +185,11 @@ const wchar_t * image_item::get_filter_rule()
 
 void image_item::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event)
 {
-	_fullscreen = !_fullscreen;
-
-	// Set image size
-	if (_movie) {
-		_current_size = _movie->currentPixmap().size();
-
-		if (scale_view(_current_size)) {
-			//_movie->setScaledSize(_current_size);
-		}
-	} else {
-		_current_size = _original_image.size();
-
-		if (scale_view(_current_size)) {
-			setPixmap(_original_image.scaled(_current_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-		} else {
-			setPixmap(_original_image);
-		}
-	}
+	toggle_fullscreen();
 
 	static_cast<::scene*>(scene())->blacken_background(_fullscreen);
 
-	if (_fullscreen) {
-		center_item();
-	}
+	center_item();
 }
 
 void image_item::show_next_movie_frame(int _id)

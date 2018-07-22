@@ -5,6 +5,8 @@ std::wregex scene::_filter(image_item::get_filter_rule(), std::regex_constants::
 
 scene::scene(const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height())
 {
+	_diashow_timer = 0;
+
 	addItem(_image = new image_item());
 
 	auto _close = new pixmap_item(RESOURCE_CLOSE_BUTTON, std::bind(&scene::close_animation_and_quit, this));
@@ -61,7 +63,7 @@ void scene::blacken_background(bool _blacken)
 void scene::set_background()
 {
 	auto _screen = QApplication::primaryScreen();
-	
+
 	_background = _screen->grabWindow(0);
 
 	// Draken background
@@ -83,6 +85,21 @@ bool scene::open(const wchar_t * _path)
 	return _image->load_resource(_path);
 }
 
+bool scene::next_item(bool _prev)
+{
+	if (_folder_view.valid()) {
+		auto _file = _folder_view.neighbor_item(!_prev, _filter);
+
+		if (!_file.empty()) {
+			_image->load_resource(_file.c_str());
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 double scene::get_image_scale()
 {
 	return _image->scale();
@@ -93,26 +110,64 @@ image_item * scene::get_image()
 	return _image;
 }
 
+void scene::timerEvent(QTimerEvent * _event)
+{
+	if (_event->timerId() == _diashow_timer) {
+		// Stop if there is no next item
+		if (!next_item(false)) {
+			_image->toggle_fullscreen();
+
+			blacken_background(false);
+			killTimer(_diashow_timer);
+
+			_diashow_timer = 0;
+		}
+	}
+}
+
 void scene::keyPressEvent(QKeyEvent * _event)
 {
-	std::wstring _file;
-
 	switch (_event->key()) {
 	case Qt::Key_Right:
-		_file = _folder_view.neighbor_item(true, _filter);
-		
+		next_item(false);
+
 		break;
 	case Qt::Key_Left:
-		_file = _folder_view.neighbor_item(false, _filter);
+		next_item(true);
 
 		break;
 	default:
 		QGraphicsScene::keyPressEvent(_event);
 
-		return;
+		break;
 	}
+}
 
-	if (!_file.empty()) {
-		_image->load_resource(_file.c_str());
+void scene::keyReleaseEvent(QKeyEvent * _event)
+{
+	switch (_event->key()) {
+	case Qt::Key_Space:
+	{
+		_image->toggle_fullscreen();
+
+		// Stop timer
+		if (_diashow_timer) {
+			blacken_background(false);
+			killTimer(_diashow_timer);
+
+			_diashow_timer = 0;
+		} // Start timer
+		else {
+			blacken_background(true);
+
+			_diashow_timer = startTimer(3000);
+		}
+
+		break;
+	}
+	default:
+		QGraphicsScene::keyReleaseEvent(_event);
+
+		break;
 	}
 }
