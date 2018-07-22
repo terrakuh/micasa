@@ -20,7 +20,8 @@ class scene : public QGraphicsScene
 	Q_PROPERTY(double image_scale READ get_image_scale WRITE set_image_scale)
 		
 public:
-	scene(const QSize & _size);
+	scene(QObject * _parent, const QSize & _size);
+	virtual ~scene();
 
 	void set_image_scale(double _factor);
 	void show_animation();

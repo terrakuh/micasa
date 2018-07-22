@@ -13,9 +13,7 @@ main_window::main_window()
 	setWindowState(Qt::WindowFullScreen);
 
 	// Create scene
-	_ui.graphicsView->setScene(_scene = new scene(size()));
-
-	
+	_ui.graphicsView->setScene(_scene = new scene(this, size()));
 
 	//connect(_ui.pushButton, &QPushButton::clicked, &QApplication::quit);
 

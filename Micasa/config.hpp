@@ -7,3 +7,4 @@
 #define RESOURCE_NEXT ":/next.png"
 #define RESOURCE_PREV ":/prev.png"
 #define ZORDER_CLOSE_BUTTON 2
+#define ZORDER_PLAY_BUTTON 2

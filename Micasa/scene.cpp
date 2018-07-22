@@ -3,20 +3,40 @@
 
 std::wregex scene::_filter(image_item::get_filter_rule(), std::regex_constants::icase);
 
-scene::scene(const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height())
+scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent)
 {
 	_diashow_timer = 0;
 
 	addItem(_image = new image_item());
 
-	auto _close = new pixmap_item(RESOURCE_CLOSE_BUTTON, std::bind(&scene::close_animation_and_quit, this));
+	// Add close button
+	auto _button = new pixmap_item(RESOURCE_CLOSE_BUTTON, std::bind(&scene::close_animation_and_quit, this));
 
-	_close->setPos(_size.width() - _close->boundingRect().width(), 0);
-	_close->setZValue(ZORDER_CLOSE_BUTTON);
+	_button->setPos(_size.width() - _button->boundingRect().width(), 0);
+	_button->setZValue(ZORDER_CLOSE_BUTTON);
 
-	addItem(_close);
+	addItem(_button);
+
+	printf("%p\n", _button->parentItem());
+
+	// Add play button
+	_button = new pixmap_item(RESOURCE_PLAY, []() {
+	});
+
+	_button->setPos((_size.width() - _button->boundingRect().width()) / 2, _size.height() * 0.95 + (_size.height() * 0.05 - _button->boundingRect().height()) / 2);
+	_button->setZValue(ZORDER_PLAY_BUTTON);
+
+	addItem(_button);
 
 	set_background();
+}
+
+scene::~scene()
+{
+	// Delete all items
+	for (auto _item : items()) {
+		delete _item;
+	}
 }
 
 void scene::set_image_scale(double _factor)
