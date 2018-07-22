@@ -28,6 +28,7 @@ public:
 	void close_animation_and_quit();
 	void blacken_background(bool _blacken);
 	void set_background();
+	void toggle_diashow();
 	bool open(const wchar_t * _path);
 	bool next_item(bool _prev);
 	double get_image_scale();

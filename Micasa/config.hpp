@@ -8,3 +8,5 @@
 #define RESOURCE_PREV ":/prev.png"
 #define ZORDER_CLOSE_BUTTON 2
 #define ZORDER_PLAY_BUTTON 2
+#define ZORDER_NEXT_BUTTON 2
+#define ZORDER_PREV_BUTTON 2

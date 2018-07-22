@@ -20,10 +20,31 @@ scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _siz
 	printf("%p\n", _button->parentItem());
 
 	// Add play button
-	_button = new pixmap_item(RESOURCE_PLAY, []() {
+	_button = new pixmap_item(RESOURCE_PLAY, [this]() {
+		toggle_diashow();
 	});
 
 	_button->setPos((_size.width() - _button->boundingRect().width()) / 2, _size.height() * 0.95 + (_size.height() * 0.05 - _button->boundingRect().height()) / 2);
+	_button->setZValue(ZORDER_PLAY_BUTTON);
+
+	addItem(_button);
+
+	// Add next button
+	_button = new pixmap_item(RESOURCE_NEXT, [this]() {
+		next_item(false);
+	});
+
+	_button->setPos((_size.width() - _button->boundingRect().width()) / 2 + 75, _size.height() * 0.95 + (_size.height() * 0.05 - _button->boundingRect().height()) / 2);
+	_button->setZValue(ZORDER_PLAY_BUTTON);
+
+	addItem(_button);
+
+	// Add prev button
+	_button = new pixmap_item(RESOURCE_PREV, [this]() {
+		next_item(true);
+	});
+
+	_button->setPos((_size.width() - _button->boundingRect().width()) / 2 - 75, _size.height() * 0.95 + (_size.height() * 0.05 - _button->boundingRect().height()) / 2);
 	_button->setZValue(ZORDER_PLAY_BUTTON);
 
 	addItem(_button);
@@ -95,6 +116,24 @@ void scene::set_background()
 	setBackgroundBrush(_background);
 }
 
+void scene::toggle_diashow()
+{
+	_image->toggle_fullscreen();
+
+	// Stop timer
+	if (_diashow_timer) {
+		blacken_background(false);
+		killTimer(_diashow_timer);
+
+		_diashow_timer = 0;
+	} // Start timer
+	else {
+		blacken_background(true);
+
+		_diashow_timer = startTimer(3000);
+	}
+}
+
 bool scene::open(const wchar_t * _path)
 {
 	thread_pool::global_thread_pool()->queue(std::bind([this](const std::wstring & _path) {
@@ -135,12 +174,7 @@ void scene::timerEvent(QTimerEvent * _event)
 	if (_event->timerId() == _diashow_timer) {
 		// Stop if there is no next item
 		if (!next_item(false)) {
-			_image->toggle_fullscreen();
-
-			blacken_background(false);
-			killTimer(_diashow_timer);
-
-			_diashow_timer = 0;
+			toggle_diashow();
 		}
 	}
 }
@@ -168,20 +202,7 @@ void scene::keyReleaseEvent(QKeyEvent * _event)
 	switch (_event->key()) {
 	case Qt::Key_Space:
 	{
-		_image->toggle_fullscreen();
-
-		// Stop timer
-		if (_diashow_timer) {
-			blacken_background(false);
-			killTimer(_diashow_timer);
-
-			_diashow_timer = 0;
-		} // Start timer
-		else {
-			blacken_background(true);
-
-			_diashow_timer = startTimer(3000);
-		}
+		toggle_diashow();
 
 		break;
 	}
