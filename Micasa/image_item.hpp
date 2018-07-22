@@ -24,6 +24,7 @@ class image_item : public QGraphicsPixmapItem, public viewable_item, public edit
 public:
 	image_item();
 	virtual void open_with() override;
+	virtual void set_diashow_time(std::chrono::milliseconds _time) override;
 	virtual void play() override;
 	virtual void pause() override;
 	virtual void rewind() override;
@@ -39,6 +40,7 @@ public:
 	virtual void center_item() override;
 	void toggle_fullscreen();
 	virtual bool load_resource(const wchar_t * _path) override;
+	std::chrono::milliseconds get_diashow_time() const;
 	context_menu & get_context_menu();
 	static const wchar_t * get_filter_rule();
 
@@ -50,6 +52,7 @@ private:
 	bool _play;
 	bool _reversed;
 	int _movie_id;
+	std::chrono::milliseconds _diashow_time;
 	QSize _current_size;
 	QSize _scene_size;
 	std::unique_ptr<QMovie> _movie;

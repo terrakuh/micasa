@@ -119,6 +119,7 @@ void scene::set_background()
 void scene::toggle_diashow()
 {
 	_image->toggle_fullscreen();
+	_image->center_item();
 
 	// Stop timer
 	if (_diashow_timer) {
@@ -130,7 +131,7 @@ void scene::toggle_diashow()
 	else {
 		blacken_background(true);
 
-		_diashow_timer = startTimer(3000);
+		_diashow_timer = startTimer(static_cast<int>(_image->get_diashow_time().count()));
 	}
 }
 

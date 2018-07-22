@@ -17,6 +17,11 @@ void image_item::open_with()
 {
 }
 
+void image_item::set_diashow_time(std::chrono::milliseconds _time)
+{
+	_diashow_time = _time;
+}
+
 void image_item::play()
 {
 	if (_movie) {
@@ -171,6 +176,11 @@ bool image_item::load_resource(const wchar_t * _path)
 	}
 
 	return false;
+}
+
+std::chrono::milliseconds image_item::get_diashow_time() const
+{
+	return _diashow_time;
 }
 
 context_menu & image_item::get_context_menu()

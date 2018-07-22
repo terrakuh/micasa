@@ -1,9 +1,13 @@
 #pragma once
 
+#include <chrono>
+
+
 class editable_item
 {
 public:
 	virtual void open_with() = 0;
+	virtual void set_diashow_time(std::chrono::milliseconds _time) = 0;
 	virtual void play() = 0;
 	virtual void pause() = 0;
 	virtual void rewind() = 0;

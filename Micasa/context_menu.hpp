@@ -24,5 +24,6 @@ private:
 	ACTIVE_MENU _menu;
 	QMenu _image;
 	QMenu _movie;
+	QMenu _diashow;
 	editable_item * _editable;
 };
