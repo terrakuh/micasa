@@ -9,6 +9,7 @@
 #include <vector>
 #include <regex>
 #include <mutex>
+#include <cwchar>
 #include <experimental\filesystem>
 
 
@@ -71,4 +72,6 @@ private:
 		}
 	}
 	static BOOL CALLBACK enumerate_callback(HWND _hwnd, LPARAM _lparam);
+	bool check_existing(const wchar_t * _path);
+	bool load_from_browser(IWebBrowser2 * _browser);
 };

@@ -40,6 +40,11 @@ void folder_view::select_item(const wchar_t * _path)
 
 bool folder_view::load_files(const wchar_t * _path)
 {
+	if (check_existing(_path)) {
+		return true;
+	}
+
+	// Load from own
 	CComPtr<IWebBrowser2> _browser;
 
 	if (SUCCEEDED(CoCreateInstance(CLSID_ShellBrowserWindow, nullptr, CLSCTX_INPROC_SERVER | CLSCTX_INPROC_HANDLER | CLSCTX_LOCAL_SERVER, IID_PPV_ARGS(&_browser)))) {
@@ -57,34 +62,13 @@ bool folder_view::load_files(const wchar_t * _path)
 			}
 		} _guard(_browser);
 
-		CComPtr<IServiceProvider> _provider;
 		CComVariant _empty;
 		CComVariant _target;
 
 		_target = _path;
 
 		if (SUCCEEDED(_browser->Navigate2(&_target, &_empty, &_empty, &_empty, &_empty))) {
-			if (SUCCEEDED(_browser->QueryInterface(IID_PPV_ARGS(&_provider)))) {
-				CComPtr<IShellBrowser> _shell_browser;
-
-				if (SUCCEEDED(_provider->QueryService(SID_STopLevelBrowser, &_shell_browser))) {
-					CComPtr<IShellView> _shell_view;
-
-					if (SUCCEEDED(_shell_browser->QueryActiveShellView(&_shell_view))) {
-						CComPtr<IFolderView> _view;
-
-						if (SUCCEEDED(_shell_view->QueryInterface(IID_PPV_ARGS(&_view)))) {
-							std::lock_guard<std::mutex> _lck(_mutex);
-
-							_items.Release();
-
-							if (SUCCEEDED(_view->Items(SVGIO_ALLVIEW | SVGIO_FLAG_VIEWORDER, IID_PPV_ARGS(&_items)))) {
-								return true;
-							}
-						}
-					}
-				}
-			}
+			return load_from_browser(_browser);
 		}
 	}
 
@@ -145,4 +129,88 @@ BOOL folder_view::enumerate_callback(HWND _hwnd, LPARAM _lparam)
 	}
 
 	return TRUE;
+}
+
+bool folder_view::check_existing(const wchar_t * _path)
+{
+	// Get explorer windows
+	std::vector<HWND> _explorer;
+
+	EnumWindows(&folder_view::enumerate_callback, reinterpret_cast<LPARAM>(&_explorer));
+
+	// Check
+	CComPtr<IShellWindows> _windows;
+
+	if (SUCCEEDED(CoCreateInstance(CLSID_ShellWindows, nullptr, CLSCTX_INPROC_SERVER | CLSCTX_INPROC_HANDLER | CLSCTX_LOCAL_SERVER, IID_PPV_ARGS(&_windows)))) {
+		VARIANT _count = { VT_I4 };
+
+		for (auto _hwnd : _explorer) {
+			if (SUCCEEDED(_windows->get_Count(&_count.lVal))) {
+				while (_count.lVal--) {
+					CComPtr<IDispatch> _dispatch;
+
+					if (_windows->Item(_count, &_dispatch) == S_OK) {
+						CComPtr<IWebBrowser2> _browser;
+
+						if (SUCCEEDED(_dispatch->QueryInterface(IID_PPV_ARGS(&_browser)))) {
+							SHANDLE_PTR _other;
+
+							// Match
+							if (SUCCEEDED(_browser->get_HWND(&_other)) && reinterpret_cast<HWND>(_other) == _hwnd) {
+								BSTR _location;
+
+								if (SUCCEEDED(_browser->get_LocationURL(&_location))) {
+									int _offset = 0;
+
+									if (std::wcsstr(_location, L"file:///") == _location) {
+										_offset = 8;
+									}
+
+									if (std::experimental::filesystem::equivalent(_path, _location + _offset)) {
+										SysFreeString(_location);
+
+										// Get list
+										return load_from_browser(_browser);
+									}
+
+									SysFreeString(_location);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+bool folder_view::load_from_browser(IWebBrowser2 * _browser)
+{
+	CComPtr<IServiceProvider> _provider;
+
+	if (SUCCEEDED(_browser->QueryInterface(IID_PPV_ARGS(&_provider)))) {
+		CComPtr<IShellBrowser> _shell_browser;
+
+		if (SUCCEEDED(_provider->QueryService(SID_STopLevelBrowser, &_shell_browser))) {
+			CComPtr<IShellView> _shell_view;
+
+			if (SUCCEEDED(_shell_browser->QueryActiveShellView(&_shell_view))) {
+				CComPtr<IFolderView> _view;
+
+				if (SUCCEEDED(_shell_view->QueryInterface(IID_PPV_ARGS(&_view)))) {
+					std::lock_guard<std::mutex> _lck(_mutex);
+
+					_items.Release();
+
+					if (SUCCEEDED(_view->Items(SVGIO_ALLVIEW | SVGIO_FLAG_VIEWORDER, IID_PPV_ARGS(&_items)))) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	return false;
 }
