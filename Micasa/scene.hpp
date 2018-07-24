@@ -2,6 +2,7 @@
 
 #include <QtWidgets\QGraphicsScene>
 #include <QtWidgets\QGraphicsSceneMouseEvent>
+#include <QtWidgets\QDesktopWidget>
 #include <QtGui\QPainter>
 #include <QtGui\QKeyEvent>
 #include <QtCore\QObject>

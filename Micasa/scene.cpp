@@ -103,9 +103,16 @@ void scene::blacken_background(bool _blacken)
 
 void scene::set_background()
 {
-	auto _screen = QApplication::primaryScreen();
+	auto _desktop = QApplication::desktop();
+	auto _index = _desktop->screenNumber(static_cast<QWidget*>(parent()));
 
-	_background = _screen->grabWindow(0);
+	// Fall back to primary screen
+	if (_index == -1) {
+		_index = _desktop->primaryScreen();
+	}
+	
+	// Take screenshot
+	_background = QApplication::screens()[_index]->grabWindow(0);
 
 	// Draken background
 	QPainter _painter(&_background);
