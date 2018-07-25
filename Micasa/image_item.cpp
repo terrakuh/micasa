@@ -85,7 +85,7 @@ void image_item::quit()
 	static_cast<::scene*>(scene())->close_animation_and_quit();
 }
 
-void image_item::center_item()
+void image_item::center_item(const QPoint & _point)
 {
 	auto _scale = scale();
 

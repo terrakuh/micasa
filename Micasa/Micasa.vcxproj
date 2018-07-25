@@ -150,7 +150,6 @@
     <ClInclude Include="scene.hpp" />
     <ClInclude Include="settings.hpp" />
     <ClInclude Include="thread_pool.h" />
-    <ClInclude Include="viewable_item.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

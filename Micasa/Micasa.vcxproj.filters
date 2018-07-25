@@ -71,9 +71,6 @@
     <ClInclude Include="config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="viewable_item.hpp">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
