@@ -8,6 +8,7 @@
 #include <QtGui\QKeyEvent>
 #include <QtCore\QObject>
 #include <QtCore\QPropertyAnimation>
+#include <QtCore\QTimeLine>
 
 #include "folder_view.hpp"
 #include "image_item.hpp"
@@ -40,6 +41,7 @@ protected:
 	virtual void timerEvent(QTimerEvent * _event) override;
 	virtual void keyPressEvent(QKeyEvent * _event) override;
 	virtual void keyReleaseEvent(QKeyEvent * _event) override;
+	virtual void wheelEvent(QGraphicsSceneWheelEvent * _event) override;
 	/*virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override
 	{
 		puts("hi");
@@ -62,10 +64,13 @@ protected:
 	}
 
 private:
+	int _d;
+	int _g;
 	int _diashow_timer;
 	static std::wregex _filter;
 	folder_view _folder_view;
 	QPixmap _background;
+	QTimeLine _scaler;
 	image_item * _image;
 
 	

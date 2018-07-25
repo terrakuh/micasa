@@ -3,7 +3,7 @@
 
 std::wregex scene::_filter(image_item::get_filter_rule(), std::regex_constants::icase);
 
-scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent)
+scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent), _scaler(200)
 {
 	_diashow_timer = 0;
 
@@ -50,6 +50,22 @@ scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _siz
 	addItem(_button);
 
 	set_background();
+	_d = 0;
+	_g = 0;
+	// Timeline scaler
+	_scaler.setCurveShape(QTimeLine::LinearCurve);
+	_scaler.setUpdateInterval(16);
+	connect(&_scaler, &QTimeLine::valueChanged, [this](double _x) {
+		auto _y = image_scaling_function((_d - _g) * _x + _g);
+		auto _y1 = image_scaling_function(_g);
+		auto _old = _image->scale();
+		_image->setScale(_y);
+		printf("%f => %f\n", _old, _image->scale());
+		_image->center_item();
+	});
+	connect(&_scaler, &QTimeLine::finished, [this]() {
+		_g = _d;
+	});
 }
 
 scene::~scene()
@@ -220,6 +236,24 @@ void scene::keyReleaseEvent(QKeyEvent * _event)
 		break;
 	}
 }
+
+void scene::wheelEvent(QGraphicsSceneWheelEvent * _event)
+{
+
+	/*if (_event->delta() > 0) {
+		_scaler.setDirection(QTimeLine::Forward);
+	} else {
+		_scaler.setDirection(QTimeLine::Backward);
+	}*/
+
+	auto _steps = _event->delta() /120;
+
+	_d += _steps;
+	_d = (std::min)((std::max)(_d, -20), 20);
+	
+	_scaler.start();
+}
+
 double scene::image_scaling_function(double _x)
 {
 	return std::exp(0.18 * _x);
