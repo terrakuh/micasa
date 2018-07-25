@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <QtWidgets\QGraphicsScene>
 #include <QtWidgets\QGraphicsSceneMouseEvent>
 #include <QtWidgets\QDesktopWidget>
@@ -66,4 +67,7 @@ private:
 	folder_view _folder_view;
 	QPixmap _background;
 	image_item * _image;
+
+	
+	static double image_scaling_function(double _x);
 };

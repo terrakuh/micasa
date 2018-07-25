@@ -220,3 +220,7 @@ void scene::keyReleaseEvent(QKeyEvent * _event)
 		break;
 	}
 }
+double scene::image_scaling_function(double _x)
+{
+	return 87 * std::exp(0.14 * _x);
+}
