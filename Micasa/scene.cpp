@@ -50,19 +50,19 @@ scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _siz
 	addItem(_button);
 
 	set_background();
+
+	// Timeline scaler
 	_d = 0;
 	_g = 0;
-	// Timeline scaler
+
 	_scaler.setCurveShape(QTimeLine::LinearCurve);
 	_scaler.setUpdateInterval(20);
+
 	connect(&_scaler, &QTimeLine::valueChanged, [this](double _x) {
 		auto _y = image_scaling_function((_d - _g) * _x + _g);
-		auto _y1 = image_scaling_function(_g);
-		auto _old = _image->scale();
 		auto _center = _image->get_center();
+
 		_image->setScale(_y);
-		printf("%f => %f\n", _old, _y);
-		printf("%i, %i\n", _center.x(), _center.y());
 		_image->center_item(_center);
 	});
 	connect(&_scaler, &QTimeLine::finished, [this]() {
@@ -241,13 +241,6 @@ void scene::keyReleaseEvent(QKeyEvent * _event)
 
 void scene::wheelEvent(QGraphicsSceneWheelEvent * _event)
 {
-
-	/*if (_event->delta() > 0) {
-		_scaler.setDirection(QTimeLine::Forward);
-	} else {
-		_scaler.setDirection(QTimeLine::Backward);
-	}*/
-
 	auto _steps = _event->delta() /120;
 
 	_d += _steps;
