@@ -54,14 +54,14 @@ scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _siz
 	_g = 0;
 	// Timeline scaler
 	_scaler.setCurveShape(QTimeLine::LinearCurve);
-	_scaler.setUpdateInterval(16);
+	_scaler.setUpdateInterval(20);
 	connect(&_scaler, &QTimeLine::valueChanged, [this](double _x) {
 		auto _y = image_scaling_function((_d - _g) * _x + _g);
 		auto _y1 = image_scaling_function(_g);
 		auto _old = _image->scale();
 		_image->setScale(_y);
-		printf("%f => %f\n", _old, _image->scale());
 		_image->center_item();
+		printf("%f => %f\n", _old, _y);
 	});
 	connect(&_scaler, &QTimeLine::finished, [this]() {
 		_g = _d;
