@@ -59,9 +59,11 @@ scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _siz
 		auto _y = image_scaling_function((_d - _g) * _x + _g);
 		auto _y1 = image_scaling_function(_g);
 		auto _old = _image->scale();
+		auto _center = _image->get_center();
 		_image->setScale(_y);
-		_image->center_item();
 		printf("%f => %f\n", _old, _y);
+		printf("%i, %i\n", _center.x(), _center.y());
+		_image->center_item(_center);
 	});
 	connect(&_scaler, &QTimeLine::finished, [this]() {
 		_g = _d;

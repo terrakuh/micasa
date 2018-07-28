@@ -89,7 +89,12 @@ void image_item::center_item(const QPoint & _point)
 {
 	auto _scale = scale();
 
-	setPos((_scene_size.width() - _current_size.width() * _scale) / 2, (_scene_size.height() - _current_size.height() * _scale) / 2);
+	// Use center of screen
+	if (_point.y() < 0 || _point.x() < 0) {
+		setPos((_scene_size.width() - _current_size.width() * _scale) / 2, (_scene_size.height() - _current_size.height() * _scale) / 2);
+	} else {
+		setPos(_point.x() - _current_size.width() * _scale / 2, _point.y() - _current_size.height() * _scale / 2);
+	}
 }
 
 void image_item::toggle_fullscreen()
@@ -176,6 +181,13 @@ bool image_item::load_resource(const wchar_t * _path)
 	}
 
 	return false;
+}
+
+QPoint image_item::get_center()
+{
+	auto _scale = scale() / 2;
+
+	return (pos() + QPoint(_current_size.width() * _scale, _current_size.height() * _scale)).toPoint();
 }
 
 std::chrono::milliseconds image_item::get_diashow_time() const

@@ -39,6 +39,7 @@ public:
 	void center_item(const QPoint & _point = QPoint(-1, -1));
 	void toggle_fullscreen();
 	bool load_resource(const wchar_t * _path);
+	QPoint get_center();
 	std::chrono::milliseconds get_diashow_time() const;
 	context_menu & get_context_menu();
 	static const wchar_t * get_filter_rule();
