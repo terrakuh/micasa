@@ -3,7 +3,7 @@
 
 std::wregex scene::_filter(image_item::get_filter_rule(), std::regex_constants::icase);
 
-scene::scene(QWidget * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent), _scaler(200)
+scene::scene(QWidget * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent), _scaler(_parent, &_image)
 {
 	_diashow_timer = 0;
 
@@ -50,23 +50,6 @@ scene::scene(QWidget * _parent, const QSize & _size) : QGraphicsScene(0, 0, _siz
 	addItem(_button);
 
 	set_background();
-
-	// Timeline scaler
-	_d = 0;
-	_g = 0;
-
-	_scaler.setCurveShape(QTimeLine::LinearCurve);
-	_scaler.setUpdateInterval(20);
-
-	connect(&_scaler, &QTimeLine::valueChanged, [=](double _x) {
-		auto _y = image_scaling_function((_d - _g) * _x + _g);
-		auto _center = _image->get_center();
-
-		_image->set_scale(_y, _parent->mapFromGlobal(QCursor::pos()));
-	});
-	connect(&_scaler, &QTimeLine::finished, [this]() {
-		_g = _d;
-	});
 }
 
 scene::~scene()
@@ -240,17 +223,5 @@ void scene::keyReleaseEvent(QKeyEvent * _event)
 
 void scene::wheelEvent(QGraphicsSceneWheelEvent * _event)
 {
-	auto _steps = _event->delta() /120;
-
-	_d += _steps;
-	_d = (std::min)((std::max)(_d, -20), 20);
-
-	if (_scaler.state() != QTimeLine::Running) {
-		_scaler.start();
-	}
-}
-
-double scene::image_scaling_function(double _x)
-{
-	return std::exp(0.18 * _x);
+	_scaler.add_steps(_event->delta() /120);
 }

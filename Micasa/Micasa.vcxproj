@@ -129,6 +129,7 @@
     <ClCompile Include="context_menu.cpp" />
     <ClCompile Include="folder_view.cpp" />
     <ClCompile Include="image_item.cpp" />
+    <ClCompile Include="image_scaler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_window.cpp" />
     <ClCompile Include="moc_scene.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="editable_item.hpp" />
     <ClInclude Include="folder_view.hpp" />
     <ClInclude Include="image_item.hpp" />
+    <ClInclude Include="image_scaler.hpp" />
     <ClInclude Include="main_window.hpp" />
     <ClInclude Include="main_window_ui.hpp" />
     <ClInclude Include="pixmap_item.hpp" />

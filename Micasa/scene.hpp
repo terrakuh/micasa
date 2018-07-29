@@ -15,6 +15,7 @@
 #include "pixmap_item.hpp"
 #include "config.hpp"
 #include "thread_pool.h"
+#include "image_scaler.hpp"
 
 
 class scene : public QGraphicsScene
@@ -64,15 +65,10 @@ protected:
 	}
 
 private:
-	int _d;
-	int _g;
 	int _diashow_timer;
 	static std::wregex _filter;
 	folder_view _folder_view;
 	QPixmap _background;
-	QTimeLine _scaler;
+	image_scaler _scaler;
 	image_item * _image;
-
-	
-	static double image_scaling_function(double _x);
 };

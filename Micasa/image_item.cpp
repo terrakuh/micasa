@@ -8,6 +8,7 @@ image_item::image_item() : _context_menu(this)
 	_play = false;
 	_reversed = false;
 	_movie_id = 0;
+	_scale_level = 0;
 
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setCursor(QCursor(Qt::CursorShape::SizeAllCursor));
@@ -131,6 +132,7 @@ bool image_item::load_resource(const wchar_t * _path)
 	auto _recurred = false;
 
 	// Reset some values
+	_scale_level = 0;
 	_movie.reset();
 	setScale(1);
 

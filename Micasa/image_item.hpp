@@ -18,6 +18,8 @@
 #include "context_menu.hpp"
 
 
+class image_scaler;
+
 class image_item : public QGraphicsPixmapItem, public editable_item
 {
 public:
@@ -49,10 +51,13 @@ protected:
 	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event) override;
 
 private:
+	friend image_scaler;
+
 	bool _fullscreen;
 	bool _play;
 	bool _reversed;
 	int _movie_id;
+	int _scale_level;
 	std::chrono::milliseconds _diashow_time;
 	QSize _current_size;
 	QSize _scene_size;
