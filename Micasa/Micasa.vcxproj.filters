@@ -21,9 +21,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -55,9 +52,6 @@
     </ClInclude>
     <ClInclude Include="main_window.hpp">
       <Filter>Header Files\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="settings.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="image_item.hpp">
       <Filter>Header Files\ui</Filter>

@@ -12,7 +12,6 @@
 #include <QtCore\QFileInfo>
 
 #include "main_window_ui.hpp"
-#include "settings.hpp"
 #include "scene.hpp"
 
 
