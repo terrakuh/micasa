@@ -244,8 +244,10 @@ void scene::wheelEvent(QGraphicsSceneWheelEvent * _event)
 
 	_d += _steps;
 	_d = (std::min)((std::max)(_d, -20), 20);
-	
-	_scaler.start();
+
+	if (_scaler.state() != QTimeLine::Running) {
+		_scaler.start();
+	}
 }
 
 double scene::image_scaling_function(double _x)
