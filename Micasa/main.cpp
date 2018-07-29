@@ -48,7 +48,7 @@ int main(int argc, char ** argv)
 #if not defined(_DEBUG)
 		_argv[1]
 #else
-		L"p:/test.jpg"
+		L"p:/test.gif"
 #endif
 		);
 

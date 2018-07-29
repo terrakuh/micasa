@@ -124,7 +124,9 @@ bool image_item::load_resource(const wchar_t * _path)
 	QFileInfo _info(QString::fromWCharArray(_path));
 	auto _recurred = false;
 
+	// Reset some values
 	_movie.reset();
+	setScale(1);
 
 	// Is movie
 	if (QMovie::supportedFormats().contains(_info.suffix().toUtf8())) {
