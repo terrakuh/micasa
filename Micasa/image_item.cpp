@@ -119,6 +119,12 @@ void image_item::toggle_fullscreen()
 	}
 }
 
+void image_item::set_scale(double _scale, const QPoint & _anchor)
+{
+	setPos(pos() - (_anchor - pos()) * (_scale - scale()) / scale());
+	setScale(_scale);
+}
+
 bool image_item::load_resource(const wchar_t * _path)
 {
 	QFileInfo _info(QString::fromWCharArray(_path));

@@ -38,6 +38,7 @@ public:
 	virtual void quit() override;
 	void center_item(const QPoint & _point = QPoint(-1, -1));
 	void toggle_fullscreen();
+	void set_scale(double _scale, const QPoint & _anchor);
 	bool load_resource(const wchar_t * _path);
 	QPoint get_center();
 	std::chrono::milliseconds get_diashow_time() const;

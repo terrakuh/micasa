@@ -3,7 +3,7 @@
 
 std::wregex scene::_filter(image_item::get_filter_rule(), std::regex_constants::icase);
 
-scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent), _scaler(200)
+scene::scene(QWidget * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent), _scaler(200)
 {
 	_diashow_timer = 0;
 
@@ -58,12 +58,11 @@ scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _siz
 	_scaler.setCurveShape(QTimeLine::LinearCurve);
 	_scaler.setUpdateInterval(20);
 
-	connect(&_scaler, &QTimeLine::valueChanged, [this](double _x) {
+	connect(&_scaler, &QTimeLine::valueChanged, [=](double _x) {
 		auto _y = image_scaling_function((_d - _g) * _x + _g);
 		auto _center = _image->get_center();
 
-		_image->setScale(_y);
-		_image->center_item(_center);
+		_image->set_scale(_y, _parent->mapFromGlobal(QCursor::pos()));
 	});
 	connect(&_scaler, &QTimeLine::finished, [this]() {
 		_g = _d;
