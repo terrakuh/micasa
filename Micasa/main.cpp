@@ -8,7 +8,7 @@
 #include <Windows.h>
 
 
-#if not defined(_DEBUG)
+#if !defined(_DEBUG)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 #else
 int main(int argc, char ** argv)
@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
 		int _argc = 0;
 		auto _argv = CommandLineToArgvW(GetCommandLineW(), &_argc);
 
-#if not defined(_DEBUG)
+#if !defined(_DEBUG)
 		if (_argc <= 1 || !_argv) {
 			return 1;
 		}
@@ -45,10 +45,10 @@ int main(int argc, char ** argv)
 
 		// Load image
 		_main.get_scene()->open(
-#if not defined(_DEBUG)
+#if !defined(_DEBUG)
 		_argv[1]
 #else
-		L"p:/test.jpg"
+		L"d:/test.jpg"
 #endif
 		);
 
