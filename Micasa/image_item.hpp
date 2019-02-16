@@ -15,11 +15,12 @@
 #include <QtCore\QFileInfo>
 #include <QtCore\QTimer>
 
-#include "viewable_item.hpp"
 #include "context_menu.hpp"
 
 
-class image_item : public QGraphicsPixmapItem, public viewable_item, public editable_item
+class image_scaler;
+
+class image_item : public QGraphicsPixmapItem, public editable_item
 {
 public:
 	image_item();
@@ -37,9 +38,11 @@ public:
 	virtual void rotate_clockwise() override;
 	virtual void rotate_counterclockwise() override;
 	virtual void quit() override;
-	virtual void center_item() override;
+	void center_item(const QPoint & _point = QPoint(-1, -1));
 	void toggle_fullscreen();
-	virtual bool load_resource(const wchar_t * _path) override;
+	void set_scale(double _scale, const QPoint & _anchor);
+	bool load_resource(const wchar_t * _path);
+	QPoint get_center();
 	std::chrono::milliseconds get_diashow_time() const;
 	context_menu & get_context_menu();
 	static const wchar_t * get_filter_rule();
@@ -48,10 +51,13 @@ protected:
 	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * _event) override;
 
 private:
+	friend image_scaler;
+
 	bool _fullscreen;
 	bool _play;
 	bool _reversed;
 	int _movie_id;
+	int _scale_level;
 	std::chrono::milliseconds _diashow_time;
 	QSize _current_size;
 	QSize _scene_size;

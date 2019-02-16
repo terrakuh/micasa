@@ -8,6 +8,7 @@ image_item::image_item() : _context_menu(this)
 	_play = false;
 	_reversed = false;
 	_movie_id = 0;
+	_scale_level = 0;
 
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setCursor(QCursor(Qt::CursorShape::SizeAllCursor));
@@ -85,11 +86,16 @@ void image_item::quit()
 	static_cast<::scene*>(scene())->close_animation_and_quit();
 }
 
-void image_item::center_item()
+void image_item::center_item(const QPoint & _point)
 {
 	auto _scale = scale();
 
-	setPos((_scene_size.width() - _current_size.width() * _scale) / 2, (_scene_size.height() - _current_size.height() * _scale) / 2);
+	// Use center of screen
+	if (_point.y() < 0 || _point.x() < 0) {
+		setPos((_scene_size.width() - _current_size.width() * _scale) / 2, (_scene_size.height() - _current_size.height() * _scale) / 2);
+	} else {
+		setPos(_point.x() - _current_size.width() * _scale / 2, _point.y() - _current_size.height() * _scale / 2);
+	}
 }
 
 void image_item::toggle_fullscreen()
@@ -114,12 +120,21 @@ void image_item::toggle_fullscreen()
 	}
 }
 
+void image_item::set_scale(double _scale, const QPoint & _anchor)
+{
+	setPos(pos() - (_anchor - pos()) * (_scale - scale()) / scale());
+	setScale(_scale);
+}
+
 bool image_item::load_resource(const wchar_t * _path)
 {
 	QFileInfo _info(QString::fromWCharArray(_path));
 	auto _recurred = false;
 
+	// Reset some values
+	_scale_level = 0;
 	_movie.reset();
+	setScale(1);
 
 	// Is movie
 	if (QMovie::supportedFormats().contains(_info.suffix().toUtf8())) {
@@ -176,6 +191,13 @@ bool image_item::load_resource(const wchar_t * _path)
 	}
 
 	return false;
+}
+
+QPoint image_item::get_center()
+{
+	auto _scale = scale() / 2;
+
+	return (pos() + QPoint(_current_size.width() * _scale, _current_size.height() * _scale)).toPoint();
 }
 
 std::chrono::milliseconds image_item::get_diashow_time() const

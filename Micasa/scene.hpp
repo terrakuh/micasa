@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <QtWidgets\QGraphicsScene>
 #include <QtWidgets\QGraphicsSceneMouseEvent>
 #include <QtWidgets\QDesktopWidget>
@@ -7,12 +8,14 @@
 #include <QtGui\QKeyEvent>
 #include <QtCore\QObject>
 #include <QtCore\QPropertyAnimation>
+#include <QtCore\QTimeLine>
 
 #include "folder_view.hpp"
 #include "image_item.hpp"
 #include "pixmap_item.hpp"
 #include "config.hpp"
 #include "thread_pool.h"
+#include "image_scaler.hpp"
 
 
 class scene : public QGraphicsScene
@@ -21,7 +24,7 @@ class scene : public QGraphicsScene
 	Q_PROPERTY(double image_scale READ get_image_scale WRITE set_image_scale)
 		
 public:
-	scene(QObject * _parent, const QSize & _size);
+	scene(QWidget * _parent, const QSize & _size);
 	virtual ~scene();
 
 	void set_image_scale(double _factor);
@@ -39,6 +42,7 @@ protected:
 	virtual void timerEvent(QTimerEvent * _event) override;
 	virtual void keyPressEvent(QKeyEvent * _event) override;
 	virtual void keyReleaseEvent(QKeyEvent * _event) override;
+	virtual void wheelEvent(QGraphicsSceneWheelEvent * _event) override;
 	/*virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * _event) override
 	{
 		puts("hi");
@@ -65,5 +69,6 @@ private:
 	static std::wregex _filter;
 	folder_view _folder_view;
 	QPixmap _background;
+	image_scaler _scaler;
 	image_item * _image;
 };

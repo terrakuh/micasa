@@ -3,7 +3,7 @@
 
 std::wregex scene::_filter(image_item::get_filter_rule(), std::regex_constants::icase);
 
-scene::scene(QObject * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent)
+scene::scene(QWidget * _parent, const QSize & _size) : QGraphicsScene(0, 0, _size.width(), _size.height(), _parent), _scaler(_parent, &_image)
 {
 	_diashow_timer = 0;
 
@@ -219,4 +219,9 @@ void scene::keyReleaseEvent(QKeyEvent * _event)
 
 		break;
 	}
+}
+
+void scene::wheelEvent(QGraphicsSceneWheelEvent * _event)
+{
+	_scaler.add_steps(_event->delta() /120);
 }
