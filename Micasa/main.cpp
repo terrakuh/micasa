@@ -7,13 +7,24 @@
 #include <QtCore\QFileInfo>
 #include <Windows.h>
 
+#define DUMMY_DEBUG
 
-#if !defined(_DEBUG)
+
+#if !defined(_DEBUG) && !defined(DUMMY_DEBUG)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 #else
 int main(int argc, char ** argv)
 #endif
 {
+	int _argc = 0;
+	auto _argv = CommandLineToArgvW(GetCommandLineW(), &_argc);
+
+#if !defined(_DEBUG) && !defined(DUMMY_DEBUG)
+	if (_argc <= 1 || !_argv) {
+		return 1;
+	}
+#endif
+
 	if (SUCCEEDED(CoInitializeEx(nullptr, COINIT_MULTITHREADED))) {
 		struct terminator
 		{
@@ -23,18 +34,9 @@ int main(int argc, char ** argv)
 			}
 		} _terminator;
 
-		int _argc = 0;
-		auto _argv = CommandLineToArgvW(GetCommandLineW(), &_argc);
-
-#if !defined(_DEBUG)
-		if (_argc <= 1 || !_argv) {
-			return 1;
-		}
-#endif
-
 		QApplication app(_argc, reinterpret_cast<char**>(_argv));
 		QDir::setCurrent(QFileInfo(QString::fromWCharArray(_argv[0])).absolutePath());
-
+		
 		// Register resources
 		QResource::registerResource(QDir::currentPath() + "/resources.rcc");
 
@@ -45,7 +47,7 @@ int main(int argc, char ** argv)
 
 		// Load image
 		_main.get_scene()->open(
-#if !defined(_DEBUG)
+#if !defined(_DEBUG) && !defined(DUMMY_DEBUG)
 		_argv[1]
 #else
 		L"d:/test.jpg"

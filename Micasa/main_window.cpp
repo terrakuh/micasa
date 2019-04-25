@@ -32,9 +32,18 @@ scene * main_window::get_scene()
 
 void main_window::keyPressEvent(QKeyEvent * _event)
 {
-	if (_event->key() == Qt::Key_Escape) {
+	switch (_event->key()) {
+	case Qt::Key_Escape:
 		_scene->close_animation_and_quit();
 		_event->accept();
+
+		break;
+	case Qt::Key_R:
+		_scene->set_image_scale(1);
+
+		break;
+	default:
+		break;
 	}
 }
 
