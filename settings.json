@@ -1,0 +1,7 @@
+{
+	"$schema": "./settings-schema.json",
+	"theme": {
+		"opacity": 0.6,
+		"background": "#000000"
+	}
+}
