@@ -11,3 +11,9 @@ file(GLOB_RECURSE FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*")
 
 add_executable(micasa "main.cpp" "${FILES}")
 target_link_libraries(micasa Qt5::Widgets)
+
+install(TARGETS micasa
+		RUNTIME DESTINATION "bin")
+install(FILES "settings.json"
+		DESTINATION "/etc"
+		RENAME "micasa.json")
