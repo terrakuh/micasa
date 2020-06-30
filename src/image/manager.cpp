@@ -2,10 +2,14 @@
 
 using namespace micasa::image;
 
-manager::manager(QString image) : _current{std::move(image)}
-{}
+inline QString current;
 
-QString manager::current() const
+void manager::init(QString path)
 {
-	return _current;
+	::current = std::move(path);
+}
+
+QString manager::current()
+{
+	return ::current;
 }

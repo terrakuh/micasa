@@ -9,11 +9,8 @@ namespace image {
 class manager
 {
 public:
-	manager(QString image);
-	QString current() const;
-
-private:
-	QString _current;
+	static void init(QString path);
+	static QString current();
 };
 
 } // namespace image

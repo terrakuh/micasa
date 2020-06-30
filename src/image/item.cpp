@@ -1,10 +1,12 @@
 #include "item.hpp"
 
+#include "manager.hpp"
+
 #include <QCursor>
 
 using namespace micasa::image;
 
-item::item() : QGraphicsPixmapItem{ QPixmap("sample_images/test.png") }
+item::item() : QGraphicsPixmapItem{ QPixmap(manager::current()) }
 {
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setCursor(QCursor{ Qt::CursorShape::SizeAllCursor });
