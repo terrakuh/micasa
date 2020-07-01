@@ -11,7 +11,10 @@ class item : public QGraphicsPixmapItem
 public:
 	item();
 
+	void zoom(double percentage, Qt::TransformationMode mode);
+
 private:
+	QPixmap _original;
 };
 
 } // namespace image

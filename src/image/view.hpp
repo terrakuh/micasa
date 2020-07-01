@@ -1,8 +1,8 @@
 #ifndef MICASA_IMAGE_VIEW_HPP_
 #define MICASA_IMAGE_VIEW_HPP_
 
-#include <QGraphicsItem>
-#include <QGraphicsScene>
+#include "scene.hpp"
+
 #include <QGraphicsView>
 #include <QResizeEvent>
 
@@ -20,8 +20,7 @@ protected:
 	void resizeEvent(QResizeEvent* event) override;
 
 private:
-	QGraphicsScene* _scene;
-	QGraphicsItem* _item;
+	class scene _scene;
 };
 
 } // namespace image

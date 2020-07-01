@@ -5,6 +5,10 @@ project(micasa
 		LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type." FORCE)
+endif()
+
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 file(GLOB_RECURSE FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*")
